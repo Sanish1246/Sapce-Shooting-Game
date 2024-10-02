@@ -19,6 +19,17 @@ body {
     text-align:center;
     margin-top:0px;
   }
+
+  h2{
+    text-align:center;
+    font-size: 2.5rem;
+    margin-top:0px;
+  }
+
+  p{
+    text-align:center;
+    font-size: 2rem;
+  }
   
   .topBar {
     overflow: hidden;
@@ -64,4 +75,7 @@ body {
 .buttonContainer button:hover{
   background-color: hsl(214, 98%, 8%);
 }
+
+
+
   
