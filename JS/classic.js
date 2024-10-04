@@ -15,8 +15,8 @@ let playerImg;
 let playerVelX=tile;
 
 let enemies=[];
-let enemyWidth=tile*2;
-let enemyHeight=tile*2;
+let enemyWidth=tile;
+let enemyHeight=tile;
 let enemyX=tile;
 let enemyY=tile;
 let enemyImg
@@ -83,8 +83,8 @@ function createEnemy() { //creating the enemies and their positions
         for (let j=0;j<enemyRow;j++) {
             let enemy={ //creating each enemy one by one
                 img: enemyImg,
-                x: enemyX + i*enemyWidth,  //since the aliens have a width of 2 tiles
-                y: enemyY + j*enemyHeight, //since the aliens have a height of 2 tiles
+                x: enemyX + i*enemyWidth,  
+                y: enemyY + j*enemyHeight, 
                 width:enemyWidth,
                 height:enemyHeight,
                 alive: true
