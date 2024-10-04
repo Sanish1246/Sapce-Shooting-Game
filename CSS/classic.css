@@ -16,7 +16,9 @@ h1{
 }
 
 canvas {
-  background-color: black;
+  background-image: url("../images/sky.jpg");
+  background-repeat:no-repeat;
+  background-size:cover;
   padding-left: 0;
   padding-right: 0;
   margin-left: auto;
