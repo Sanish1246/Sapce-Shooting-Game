@@ -32,6 +32,9 @@ let shotImg=new Image();
 shotImg.src="../images/shot.png";
 
 let gameOver=false;
+let playerScore=document.getElementById("playerScore");
+let newScore=0;
+let gameHeader=document.getElementById("gameHeader");
 
 let player= {
     y:playerY,
@@ -62,7 +65,10 @@ window.onload = ()=>{
     document.addEventListener("keyup",shoot); //releases a bullet once the spacebar is released
 }
 
-function update(){ //Function to update the player position
+function update(){ //Function to update the player and enemy position
+    if(gameOver){
+        return;
+    }
     requestAnimationFrame(update);
     context.clearRect(0,0,map.width,map.height); //Erases the previous position of the player
     context.drawImage(playerImg,player.x,player.y,player.width,player.height);
@@ -80,6 +86,11 @@ function update(){ //Function to update the player position
                 }
             }
             context.drawImage(enemyImg, enemy.x,enemy.y,enemy.width,enemy.height);
+
+            if(enemy.y>playerY||collision(player,enemy)){
+                gameOver=true;
+                gameHeader.innerText="Game Over";
+            }
         }
     }
 
@@ -90,10 +101,11 @@ function update(){ //Function to update the player position
 
         for(k=0;k<enemies.length;k++){ //Detecting collision
             let enemy=enemies[k];
-            if (!shot.used && enemy.alive && collision(shot,enemy)){
+            if (!shot.used && enemy.alive && collision(shot,enemy)){  //If a shot killed an enemy
                 shot.used=true;
                 enemy.alive=false;
                 remaining--;
+                newScore+=200;
             }
         }
     }
@@ -105,10 +117,13 @@ function update(){ //Function to update the player position
     if (remaining==0) {
         enemyCol=Math.min(enemyCol+1,col/2-2);  //Ensures a maximum of 6 columns
         enemyRow=Math.min(enemyRow+1,row-4) //Ensures that there are at max 12 rows
+        enemyVelX+=0.1;
         enemies=[]; 
         shotArray=[]; //To ensure that a bullet already fired does not kill an enemy while they are spwaning
         createEnemy()
     }
+
+    playerScore.innerText=newScore;
         
 }
 

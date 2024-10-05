@@ -42,7 +42,7 @@ canvas {
   color:white;
 }
 
-#playerScore {
+#scoreContainer {
   font-family: "Pixelify Sans", sans-serif;
   position: absolute;
   padding: 10px;
