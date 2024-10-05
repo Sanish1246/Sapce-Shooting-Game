@@ -22,6 +22,7 @@ h1{
 
 canvas {
   background-image: url("../images/sky.jpg");
+  outline:2px solid white;
   background-repeat:no-repeat;
   background-size:cover;
   padding-left: 0;
