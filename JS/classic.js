@@ -31,6 +31,8 @@ let shootVelY=-10;
 let shotImg=new Image();
 shotImg.src="../images/shot.png";
 
+let gameOver=false;
+
 let player= {
     y:playerY,
     x:playerX,
@@ -99,10 +101,21 @@ function update(){ //Function to update the player position
     while(shotArray.length>0 && (shotArray[0].used||shotArray[0].y<0)){
         shotArray.shift();  //Clearing the bullet from the program once used
     }
+
+    if (remaining==0) {
+        enemyCol=Math.min(enemyCol+1,col/2-2);  //Ensures a maximum of 6 columns
+        enemyRow=Math.min(enemyRow+1,row-4) //Ensures that there are at max 12 rows
+        enemies=[]; 
+        shotArray=[]; //To ensure that a bullet already fired does not kill an enemy while they are spwaning
+        createEnemy()
+    }
         
 }
 
 function move(e){
+    if(gameOver) {
+        return;
+    }
     if (e.code=="ArrowRight" && player.x + tile + player.width<=map.width){
         player.x += playerVelX;
     } else if(e.code=="ArrowLeft" && player.x - tile>=0) {
@@ -132,6 +145,9 @@ function createEnemy() { //creating the enemies and their positions
 }
 
 function shoot(e){
+    if(gameOver){
+        return;
+    }
     if (e.code=="Space"){
         let bullet = {
             x: player.x + playerWidth*15/32,
