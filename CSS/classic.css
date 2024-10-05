@@ -42,6 +42,16 @@ canvas {
   color:white;
 }
 
+#playerScore {
+  font-family: "Pixelify Sans", sans-serif;
+  position: absolute;
+  padding: 10px;
+  text-align: center; 
+  top: 0px; 
+  left: 150px; 
+  color:white;
+}
+
 h2{
   font-size:2.5rem;
 }
