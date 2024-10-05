@@ -28,6 +28,8 @@ let remaining=0;
 
 let shotArray=[];
 let shootVelY=-10;
+let shotImg=new Image();
+shotImg.src="../images/shot.png";
 
 let player= {
     y:playerY,
@@ -55,7 +57,7 @@ window.onload = ()=>{
 
     requestAnimationFrame(update);
     document.addEventListener("keydown",move);
-    document.addEventListener("keydup",shoot); //releases a bullet once the spacebar is released
+    document.addEventListener("keyup",shoot); //releases a bullet once the spacebar is released
 }
 
 function update(){ //Function to update the player position
@@ -82,11 +84,22 @@ function update(){ //Function to update the player position
     for(let j=0;j<shotArray.length;j++){
         let shot=shotArray[j];
         shot.y+=shootVelY;
-        let shotImg=new Image();
-        shotImg.src="../Images/shot.png";
-        context.drawImage(shotImg,shot.x,shot.y,shot.width,shot.heigth)
+        context.drawImage(shotImg,shot.x,shot.y,shot.width,shot.height);
 
+        for(k=0;k<enemies.length;k++){ //Detecting collision
+            let enemy=enemies[k];
+            if (!shot.used && enemy.alive && collision(shot,enemy)){
+                shot.used=true;
+                enemy.alive=false;
+                remaining--;
+            }
+        }
     }
+
+    while(shotArray.length>0 && (shotArray[0].used||shotArray[0].y<0)){
+        shotArray.shift();  //Clearing the bullet from the program once used
+    }
+        
 }
 
 function move(e){
@@ -124,9 +137,16 @@ function shoot(e){
             x: player.x + playerWidth*15/32,
             y:player.y,
             width:tile/8,
-            heigth:tile/2,
-            hit:false
+            height:tile,
+            used:false
         }
         shotArray.push(bullet);
     }
+}
+
+function collision(shot,enemy){
+    return shot.x<enemy.x +enemy.width &&//bullet's top left corner has not reached the alien's top right corner
+           shot.x+shot.width>enemy.x && //bullet's top right corner surpasses alien's top left corner
+           shot.y<enemy.y+enemy.height &&//bullet's top left corner has not reached alien's bottom left corner
+           shot.y+shot.height>enemy.y; //bullet's bottom left corner has not passed alien's top left corner
 }
