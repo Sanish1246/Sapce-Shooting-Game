@@ -48,8 +48,27 @@ canvas {
   padding: 10px;
   text-align: center; 
   top: 0px; 
-  left: 150px; 
+  width:35%;
+  left: 0px; 
   color:white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#scoreContainer button{
+  font-family: "Pixelify Sans", sans-serif;
+  font-size:3rem;
+  color:white;
+  background-color: hsl(214, 98%, 18%);
+  border:1px solid white;
+  margin:20px;
+  margin-top:0px;
+  width:50%;
+  height:5rem;
+  border-radius:20px;
+  cursor:pointer;
 }
 
 h2{

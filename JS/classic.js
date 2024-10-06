@@ -32,7 +32,7 @@ let shotImg=new Image();
 shotImg.src="../images/shot.png";
 
 let gameOver=false;
-let playerScore=document.getElementById("playerScore");
+let playerScore=document.getElementById("playerScore");  //Getting the html element to be updated
 let newScore=0;
 let gameHeader=document.getElementById("gameHeader");
 
@@ -44,7 +44,7 @@ let player= {
 }
 
 window.onload = ()=>{
-    map=document.getElementById("map");
+    map=document.getElementById("map");  //Creating the game map
     map.width=mapWidth;
     map.height=mapHeight;
     context=map.getContext("2d");
@@ -71,7 +71,7 @@ function update(){ //Function to update the player and enemy position
     }
     requestAnimationFrame(update);
     context.clearRect(0,0,map.width,map.height); //Erases the previous position of the player
-    context.drawImage(playerImg,player.x,player.y,player.width,player.height);
+    context.drawImage(playerImg,player.x,player.y,player.width,player.height); //Draws the new position
 
     for(let i=0;i<enemies.length;i++){
         let enemy=enemies[i];
@@ -101,11 +101,11 @@ function update(){ //Function to update the player and enemy position
 
         for(k=0;k<enemies.length;k++){ //Detecting collision
             let enemy=enemies[k];
-            if (!shot.used && enemy.alive && collision(shot,enemy)){  //If a shot killed an enemy
+            if (!shot.used && enemy.alive && collision(shot,enemy)){  //Checking if a shot killed an enemy
                 shot.used=true;
                 enemy.alive=false;
                 remaining--;
-                newScore+=200;
+                newScore+=100;
             }
         }
     }
@@ -123,15 +123,15 @@ function update(){ //Function to update the player and enemy position
         createEnemy()
     }
 
-    playerScore.innerText=newScore;
+    playerScore.innerText=newScore;  //Updating the score on the screen
         
 }
 
 function move(e){
-    if(gameOver) {
+    if(gameOver) { //The player will stop moving at game over
         return;
     }
-    if (e.code=="ArrowRight" && player.x + tile + player.width<=map.width){
+    if (e.code=="ArrowRight" && player.x + tile + player.width<=map.width){  //Checking for key presses and collisions with the ap
         player.x += playerVelX;
     } else if(e.code=="ArrowLeft" && player.x - tile>=0) {
         player.x -= playerVelX;
@@ -145,7 +145,7 @@ function move(e){
 function createEnemy() { //creating the enemies and their positions
     for (let i=0;i<enemyCol;i++){
         for (let j=0;j<enemyRow;j++) {
-            let enemy={ //creating each enemy one by one
+            let enemy={    //creating each enemy as objects one by one
                 img: enemyImg,
                 x: enemyX + i*enemyWidth,  
                 y: enemyY + j*enemyHeight, 
@@ -160,7 +160,7 @@ function createEnemy() { //creating the enemies and their positions
 }
 
 function shoot(e){
-    if(gameOver){
+    if(gameOver){  //The player will not be able to shoot at game over
         return;
     }
     if (e.code=="Space"){
@@ -175,9 +175,9 @@ function shoot(e){
     }
 }
 
-function collision(shot,enemy){
-    return shot.x<enemy.x +enemy.width &&//bullet's top left corner has not reached the alien's top right corner
-           shot.x+shot.width>enemy.x && //bullet's top right corner surpasses alien's top left corner
-           shot.y<enemy.y+enemy.height &&//bullet's top left corner has not reached alien's bottom left corner
-           shot.y+shot.height>enemy.y; //bullet's bottom left corner has not passed alien's top left corner
+function collision(obj1,obj2){
+    return obj1.x<obj2.x +obj2.width &&//bullet's top left corner has not reached the alien's top right corner
+           obj1.x+obj1.width>obj2.x && //bullet's top right corner surpasses alien's top left corner
+           obj1.y<obj2.y+obj2.height &&//bullet's top left corner has not reached alien's bottom left corner
+           obj1.y+obj1.height>obj2.y; //bullet's bottom left corner has not passed alien's top left corner
 }
