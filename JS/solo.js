@@ -20,10 +20,10 @@ let enemyHeight=tile;
 let enemyX=tile;
 let enemyY=tile;
 let enemyImg;
-let enemyVelX=1;
+let enemyVelY=1;
 
-let enemyRow=2;
-let enemyCol=3;
+let spawnPosition;
+let spawnPositions=[-999,-998,-997];
 let remaining=0;
 
 let shotArray=[];
@@ -76,15 +76,8 @@ function update(){ //Function to update the player and enemy position
     for(let i=0;i<enemyArray.length;i++){
         let enemy=enemyArray[i];
         if (enemy.alive) {
-            enemy.x+=enemyVelX;  //The enemy moves horizontally
-            if (enemy.x+enemy.width >=map.width||enemy.x<=0){
-                enemyVelX*=-1; //Inverting the movement direction on collision with the edge of the map
-                enemy.x += enemyVelX*2;
-
-                for (let i=0; i<enemyArray.length;i++) {
-                    enemyArray[i].y+=enemyHeight; //Making all the enemies descend by 1 tile
-                }
-            }
+            enemy.y+=enemyVelY;  //The enemy moves horizontally
+ 
             context.drawImage(enemyImg, enemy.x,enemy.y,enemy.width,enemy.height);
 
             if(enemy.y>playerY||collision(player,enemy)){
@@ -103,24 +96,15 @@ function update(){ //Function to update the player and enemy position
             let enemy=enemyArray[k];
             if (!shot.used && enemy.alive && collision(shot,enemy)){  //Checking if a shot killed an enemy
                 shot.used=true;
+                newScore+=100;
                 enemy.alive=false;
                 remaining--;
-                newScore+=100;
             }
         }
     }
 
     while(shotArray.length>0 && (shotArray[0].used||shotArray[0].y<0)){
         shotArray.shift();  //Clearing the bullet from the program once used
-    }
-
-    if (remaining==0) {
-        enemyCol=Math.min(enemyCol+1,col/2-2);  //Ensures a maximum of 6 columns
-        enemyRow=Math.min(enemyRow+1,row-4) //Ensures that there are at max 12 rows
-        enemyVelX+=0.1;
-        enemyArray=[]; 
-        shotArray=[]; //To ensure that a bullet already fired does not kill an enemy while they are spwaning
-        createEnemy()
     }
 
     playerScore.innerText=newScore;  //Updating the score on the screen
@@ -143,20 +127,24 @@ function move(e){
 }
 
 function createEnemy() { //creating the enemies and their positions
-    for (let i=0;i<enemyCol;i++){
-        for (let j=0;j<enemyRow;j++) {
+    for (let i=0;i<3;i++){
+        do{
+            spawnPosition = Math.floor(Math.random() * (mapWidth) );
+        } while (spawnPositions.indexOf(spawnPosition)!=-1 ||spawnPosition+enemyWidth>mapWidth ||spawnPosition-tile<0); //Checking for out of bounds and for spawns in the same point
+
+        spawnPositions[i]=spawnPosition;
+        
             let enemy={    //creating each enemy as objects one by one
                 img: enemyImg,
-                x: enemyX + i*enemyWidth,  
-                y: enemyY + j*enemyHeight, 
+                x: spawnPositions[i],  
+                y: enemyY + enemyHeight, 
                 width:enemyWidth,
                 height:enemyHeight,
                 alive: true
             }
             enemyArray.push(enemy);
-        }
     }
-    remaining=enemyArray.length;
+    spawnPositions=[-1,-2,-3]
 }
 
 function shoot(e){
