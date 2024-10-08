@@ -51,7 +51,7 @@ window.onload = ()=>{
     playerImg=new Image();
     playerImg.src="../images/ship.png";
     playerImg.onload= ()=>{
-        context.drawImage(playerImg,player.x,player.y,player.width,player.height);
+        context.drawImage(playerImg,player.x,player.y,player.width,player.height);  //Drawing the player on the canvas
     }
 
     asteroidImg=new Image();
