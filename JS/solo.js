@@ -14,17 +14,16 @@ let playerY=tile*row-tile*2;
 let playerImg;
 let playerVelX=tile;
 
-let enemyArray=[];
-let enemyWidth=tile*2;
-let enemyHeight=tile;
-let enemyX=tile;
-let enemyY=tile;
-let enemyImg;
-let enemyVelY=1;
+let asteroidArray=[];
+let asteroidWidth=tile*2;
+let asteroidHeight=tile;
+let asteroidX=tile;
+let asteroidY=tile;
+let asteroidImg;
+let asteroidVelY=0.75;
 
 let spawnPosition;
 let spawnPositions=[-999,-998,-997];
-let remaining=0;
 
 let shotArray=[];
 let shootVelY=-10;
@@ -55,17 +54,17 @@ window.onload = ()=>{
         context.drawImage(playerImg,player.x,player.y,player.width,player.height);
     }
 
-    enemyImg=new Image();
-    enemyImg.src="../images/alien.png";
-
-    createEnemy();
+    asteroidImg=new Image();
+    asteroidImg.src="../images/asteroid.png";
+   
+    setInterval(createAsteroid,1500);
 
     requestAnimationFrame(update);
     document.addEventListener("keydown",move);
     document.addEventListener("keyup",shoot); //releases a bullet once the spacebar is released
 }
 
-function update(){ //Function to update the player and enemy position
+function update(){ //Function to update the player and asteroids position
     if(gameOver){
         return;
     }
@@ -73,39 +72,41 @@ function update(){ //Function to update the player and enemy position
     context.clearRect(0,0,map.width,map.height); //Erases the previous position of the player
     context.drawImage(playerImg,player.x,player.y,player.width,player.height); //Draws the new position
 
-    for(let i=0;i<enemyArray.length;i++){
-        let enemy=enemyArray[i];
-        if (enemy.alive) {
-            enemy.y+=enemyVelY;  //The enemy moves horizontally
+    for(let i=0;i<asteroidArray.length;i++){
+        let asteroid=asteroidArray[i];
+        if (asteroid.alive) {
+            asteroid.y+=asteroidVelY;  //The asteroid  moves vertically
  
-            context.drawImage(enemyImg, enemy.x,enemy.y,enemy.width,enemy.height);
+            context.drawImage(asteroidImg, asteroid.x,asteroid.y,asteroid.width,asteroid.height);
 
-            if(enemy.y>playerY||collision(player,enemy)){
+            if(collision(player,asteroid)){
                 gameOver=true;
                 gameHeader.innerText="Game Over";
             }
         }
     }
 
+
     for(let j=0;j<shotArray.length;j++){
         let shot=shotArray[j];
         shot.y+=shootVelY;
         context.drawImage(shotImg,shot.x,shot.y,shot.width,shot.height);
 
-        for(k=0;k<enemyArray.length;k++){ //Detecting collision
-            let enemy=enemyArray[k];
-            if (!shot.used && enemy.alive && collision(shot,enemy)){  //Checking if a shot killed an enemy
+        for(k=0;k<asteroidArray.length;k++){ //Detecting collision
+            let asteroid=asteroidArray[k];
+            if (!shot.used && asteroid.alive && collision(shot,asteroid)){  //Checking if a shot destroyed an asteroid
                 shot.used=true;
                 newScore+=100;
-                enemy.alive=false;
-                remaining--;
+                asteroid.alive=false;
             }
         }
     }
 
+
     while(shotArray.length>0 && (shotArray[0].used||shotArray[0].y<0)){
         shotArray.shift();  //Clearing the bullet from the program once used
     }
+    
 
     playerScore.innerText=newScore;  //Updating the score on the screen
         
@@ -126,23 +127,27 @@ function move(e){
     }
 }
 
-function createEnemy() { //creating the enemies and their positions
+function createAsteroid() { //creating the enemies and their positions
     for (let i=0;i<3;i++){
         do{
             spawnPosition = Math.floor(Math.random() * (mapWidth) );
-        } while (spawnPositions.indexOf(spawnPosition)!=-1 ||spawnPosition+enemyWidth>mapWidth ||spawnPosition-tile<0); //Checking for out of bounds and for spawns in the same point
+        } while (spawnPositions.indexOf(spawnPosition)!=-1 ||spawnPosition+asteroidWidth>mapWidth ||spawnPosition-tile<0); //Checking for out of bounds and for spawns in the same point
 
         spawnPositions[i]=spawnPosition;
         
-            let enemy={    //creating each enemy as objects one by one
-                img: enemyImg,
+            let asteroid={    //creating each asteroid as objects one by one
+                img: asteroidImg,
                 x: spawnPositions[i],  
-                y: enemyY + enemyHeight, 
-                width:enemyWidth,
-                height:enemyHeight,
+                y: 0, 
+                width:asteroidWidth,
+                height:asteroidHeight,
                 alive: true
             }
-            enemyArray.push(enemy);
+            asteroidArray.push(asteroid);
+    }
+
+    if (asteroidVelY<4){
+        asteroidVelY+=0.1;
     }
     spawnPositions=[-1,-2,-3]
 }
