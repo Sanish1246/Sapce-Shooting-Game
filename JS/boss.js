@@ -32,6 +32,8 @@ let bossX=tile*col/2-3*tile;
 let bossY=0;
 let bossImg;
 
+let i;
+
 let shotArray=[];
 let shootVelY=-10;
 let shotImg=new Image();
@@ -43,7 +45,16 @@ let newScore=0;
 let gameHeader=document.getElementById("gameHeader");
 
 let spawnPosition;
+let bossPosition;
+let bossVelX=1;
+let bossShootDecision;
+let bossShoots;
 let spawnPositions=[-999,-998,-997];
+let bossBullet;
+let bossBulletVelY=10;
+
+let bossShotImg=new Image()
+bossShotImg.src="../images/bossShot.png";
 
 let player= {
     y:playerY,
@@ -57,6 +68,7 @@ let boss={
     y:bossY,
     width:bossWidth,
     height:bossHeight,
+    hits:0,
     alive:true
 }
 
@@ -78,7 +90,7 @@ window.onload = ()=>{
     
     enemyImg=new Image();
     enemyImg.src="../images/alien.png";
-
+    
     setInterval(createEnemy,3000);
 
     requestAnimationFrame(update);
@@ -96,7 +108,24 @@ function update(){ //Function to update the player and enemy position
     
     if(boss.alive){
         context.drawImage(bossImg,boss.x,boss.y,boss.width,boss.height);
-    } 
+        boss.x+=bossVelX;
+        setInterval(bossShot,1000);
+        if(bossShot=1){
+            let bossBullet=bossShoots;
+            bossBullet.y+=bossBulletVelY;
+            context.drawImage(bossShotImg,bossBullet.x,bossBullet.y,bossBullet.width,bossBullet.height);
+
+            if (collision(bossBullet,player)){
+                gameOver=true;
+                gameHeader.innerText="Game Over";
+            }
+        }
+        
+        if (boss.x+boss.width >=map.width||boss.x<=0){
+            bossVelX*=-1; //Inverting the movement direction on collision with the edge of the map
+            context.drawImage(bossImg,boss.x,boss.y,boss.width,boss.height);
+        } 
+    }
     
     for(let i=0;i<enemyArray.length;i++){
         let enemy=enemyArray[i];
@@ -123,6 +152,18 @@ function update(){ //Function to update the player and enemy position
                 enemy.alive=false;
                 remaining--;
                 newScore+=100;
+            }
+        }
+
+        if(!shot.used && boss.alive && collision(shot,boss)){
+            boss.hits++;
+            shot.used=true;
+            if(boss.hits>=30){
+                console.log(boss.hits);
+                newScore+=1000;
+                boss.alive=false;
+                gameOver=true;
+                gameHeader.innerText="You win";
             }
         }
     }
@@ -194,4 +235,29 @@ function collision(obj1,obj2){
            obj1.x+obj1.width>obj2.x && //bullet's top right corner surpasses alien's top left corner
            obj1.y<obj2.y+obj2.height &&//bullet's top left corner has not reached alien's bottom left corner
            obj1.y+obj1.height>obj2.y; //bullet's bottom left corner has not passed alien's top left corner
+}
+
+function moveBoss(){
+    do{
+        bossPosition = Math.floor(Math.random() * (mapWidth) );
+    } while (bossPosition+bossWidth>mapWidth ||bossPosition-tile<0); //Checking for out of bounds and for spawns in the same point
+
+    context.drawImage(bossImg,bossPosition,boss.y,boss.width,boss.height);
+}
+
+function bossShot(){
+    if(gameOver){  //The player will not be able to shoot at game over
+        return;
+    }
+    bossShootDecision=Math.floor(Math.random()*2);
+    console.log(bossShootDecision);
+    if (bossShootDecision==1){
+        bossShoots = {
+            x: boss.x + bossWidth*15/32,
+            y: boss.y,
+            width:tile/8,
+            height:tile,
+        }
+    }
+    return bossShootDecision;
 }
