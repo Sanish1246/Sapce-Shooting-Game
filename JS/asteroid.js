@@ -35,6 +35,10 @@ let playerScore=document.getElementById("playerScore");  //Getting the html elem
 let newScore=0;
 let gameHeader=document.getElementById("gameHeader");
 
+let playerShotSFX=new Audio("../audio/playerShot.mp3");
+let gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
+let mapTheme=document.getElementById("mapTheme");
+
 let player= {
     y:playerY,
     x:playerX,
@@ -57,7 +61,7 @@ window.onload = ()=>{
     asteroidImg=new Image();
     asteroidImg.src="../images/asteroid.png";
    
-    setInterval(createAsteroid,1500);
+    setInterval(createAsteroid,1250);
 
     requestAnimationFrame(update);
     document.addEventListener("keydown",move);
@@ -81,6 +85,8 @@ function update(){ //Function to update the player and asteroids position
 
             if(collision(player,asteroid)){
                 gameOver=true;
+                mapTheme.pause();
+                gameOverTheme.play();
                 gameHeader.innerText="Game Over";
             }
         }
@@ -146,8 +152,8 @@ function createAsteroid() { //creating the enemies and their positions
             asteroidArray.push(asteroid);
     }
 
-    if (asteroidVelY<4){
-        asteroidVelY+=0.1;
+    if (asteroidVelY<5){
+        asteroidVelY+=0.2;
     }
     spawnPositions=[-1,-2,-3]
 }
@@ -165,6 +171,7 @@ function shoot(e){
             used:false
         }
         shotArray.push(bullet);
+        playerShotSFX.play();
     }
 }
 

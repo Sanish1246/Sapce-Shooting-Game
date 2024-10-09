@@ -54,9 +54,14 @@ let bossBulletVelY=10;
 let playerShotSFX=new Audio("../audio/playerShot.mp3");
 let bossShotSFX = new Audio("../audio/bossShot.mp3");
 let gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
+let victoryTheme = new Audio("../audio/victory.mp3");
+let bossTheme=document.getElementById("bossTheme");
 
 let bossShotImg=new Image()
 bossShotImg.src="../images/bossShot.png";
+
+let bossHealth=document.getElementById("bossHealth");;
+let currentHealth=50;
 
 let player= {
     y:playerY,
@@ -108,6 +113,22 @@ function update(){ //Function to update the player and enemy position
     context.clearRect(0,0,map.width,map.height); //Erases the previous position of the player
     context.drawImage(playerImg,player.x,player.y,player.width,player.height); //Draws the new position
     
+    
+    for(let i=0;i<enemyArray.length;i++){
+        let enemy=enemyArray[i];
+        if (enemy.alive) {
+            enemy.y+=enemyVelY;  //The enemy moves horizontally
+            context.drawImage(enemyImg, enemy.x,enemy.y,enemy.width,enemy.height);
+
+            if(collision(player,enemy)){
+                gameOver=true;
+                bossTheme.pause();
+                gameOverTheme.play();
+                gameHeader.innerText="Game Over";
+            }
+        }
+    }
+
     if(boss.alive){
         context.drawImage(bossImg,boss.x,boss.y,boss.width,boss.height);
         boss.x+=bossVelX;
@@ -120,7 +141,8 @@ function update(){ //Function to update the player and enemy position
 
             if (collision(bossBullet,player)){
                 gameOver=true;
-                //gameOverTheme.play();
+                bossTheme.pause();
+                gameOverTheme.play();
                 gameHeader.innerText="Game Over";
             }
         }
@@ -129,20 +151,6 @@ function update(){ //Function to update the player and enemy position
             bossVelX*=-1; //Inverting the movement direction on collision with the edge of the map
             context.drawImage(bossImg,boss.x,boss.y,boss.width,boss.height);
         } 
-    }
-    
-    for(let i=0;i<enemyArray.length;i++){
-        let enemy=enemyArray[i];
-        if (enemy.alive) {
-            enemy.y+=enemyVelY;  //The enemy moves horizontally
-            context.drawImage(enemyImg, enemy.x,enemy.y,enemy.width,enemy.height);
-
-            if(collision(player,enemy)){
-                gameOver=true;
-                //gameOverTheme.play();
-                gameHeader.innerText="Game Over";
-            }
-        }
     }
 
     for(let j=0;j<shotArray.length;j++){
@@ -164,11 +172,15 @@ function update(){ //Function to update the player and enemy position
             boss.hits++;
             shot.used=true;
             newScore+=100;
+            currentHealth--;
+            bossHealth.innerText=Math.floor((currentHealth)/50*100) + "%";
             if(boss.hits>=50){
                 console.log(boss.hits);
                 newScore+=1000;
                 boss.alive=false;
                 gameOver=true;
+                bossTheme.pause();
+                victoryTheme.play();
                 gameHeader.innerText="You win";
             }
         }

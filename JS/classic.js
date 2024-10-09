@@ -36,6 +36,10 @@ let playerScore=document.getElementById("playerScore");  //Getting the html elem
 let newScore=0;
 let gameHeader=document.getElementById("gameHeader");
 
+let playerShotSFX=new Audio("../audio/playerShot.mp3");
+let gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
+let mapTheme=document.getElementById("mapTheme");
+
 let player= {
     y:playerY,
     x:playerX,
@@ -89,6 +93,8 @@ function update(){ //Function to update the player and enemy position
 
             if(enemy.y>playerY||collision(player,enemy)){
                 gameOver=true;
+                mapTheme.pause();
+                gameOverTheme.play();
                 gameHeader.innerText="Game Over";
             }
         }
@@ -117,7 +123,7 @@ function update(){ //Function to update the player and enemy position
     if (remaining==0) {
         enemyCol=Math.min(enemyCol+1,col/2-2);  //Ensures a maximum of 6 columns
         enemyRow=Math.min(enemyRow+1,row-4) //Ensures that there are at max 12 rows
-        enemyVelX+=0.1;
+        enemyVelX+=0.2;
         enemyArray=[]; 
         shotArray=[]; //To ensure that a bullet already fired does not kill an enemy while they are spwaning
         createEnemy()
@@ -172,6 +178,7 @@ function shoot(e){
             used:false
         }
         shotArray.push(bullet);
+        playerShotSFX.play();
     }
 }
 
