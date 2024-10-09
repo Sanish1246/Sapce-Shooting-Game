@@ -32,7 +32,6 @@ let bossX=tile*col/2-3*tile;
 let bossY=0;
 let bossImg;
 
-let i;
 
 let shotArray=[];
 let shootVelY=-10;
@@ -45,13 +44,16 @@ let newScore=0;
 let gameHeader=document.getElementById("gameHeader");
 
 let spawnPosition;
-let bossPosition;
 let bossVelX=1;
 let bossShootDecision;
 let bossShoots;
 let spawnPositions=[-999,-998,-997];
 let bossBullet;
 let bossBulletVelY=10;
+
+let playerShotSFX=new Audio("../audio/playerShot.mp3");
+let bossShotSFX = new Audio("../audio/bossShot.mp3");
+let gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
 
 let bossShotImg=new Image()
 bossShotImg.src="../images/bossShot.png";
@@ -109,14 +111,16 @@ function update(){ //Function to update the player and enemy position
     if(boss.alive){
         context.drawImage(bossImg,boss.x,boss.y,boss.width,boss.height);
         boss.x+=bossVelX;
-        setInterval(bossShot,1000);
+        setInterval(bossShot,750);
         if(bossShot=1){
             let bossBullet=bossShoots;
             bossBullet.y+=bossBulletVelY;
+            bossShotSFX.play();
             context.drawImage(bossShotImg,bossBullet.x,bossBullet.y,bossBullet.width,bossBullet.height);
 
             if (collision(bossBullet,player)){
                 gameOver=true;
+                //gameOverTheme.play();
                 gameHeader.innerText="Game Over";
             }
         }
@@ -135,6 +139,7 @@ function update(){ //Function to update the player and enemy position
 
             if(collision(player,enemy)){
                 gameOver=true;
+                //gameOverTheme.play();
                 gameHeader.innerText="Game Over";
             }
         }
@@ -158,7 +163,8 @@ function update(){ //Function to update the player and enemy position
         if(!shot.used && boss.alive && collision(shot,boss)){
             boss.hits++;
             shot.used=true;
-            if(boss.hits>=30){
+            newScore+=100;
+            if(boss.hits>=50){
                 console.log(boss.hits);
                 newScore+=1000;
                 boss.alive=false;
@@ -227,6 +233,7 @@ function shoot(e){
             used:false
         }
         shotArray.push(bullet);
+        playerShotSFX.play();
     }
 }
 
@@ -237,13 +244,6 @@ function collision(obj1,obj2){
            obj1.y+obj1.height>obj2.y; //bullet's bottom left corner has not passed alien's top left corner
 }
 
-function moveBoss(){
-    do{
-        bossPosition = Math.floor(Math.random() * (mapWidth) );
-    } while (bossPosition+bossWidth>mapWidth ||bossPosition-tile<0); //Checking for out of bounds and for spawns in the same point
-
-    context.drawImage(bossImg,bossPosition,boss.y,boss.width,boss.height);
-}
 
 function bossShot(){
     if(gameOver){  //The player will not be able to shoot at game over
