@@ -12,10 +12,11 @@
 <body>
     <div class="topBar">  <!--Menu bar at the top of the screen-->
         <a href="index.html">Home</a>
-        <a href="login.html">Login</a>
+        <a href="login.html" id="logInOut">Login</a>
         <a href="#soloLeaderboard">Classic Mode Leaderboard</a>
         <a href="#classicLeaderboard">Asteroid Rain Leaderboard</a>
         <a href="#soloLeaderboard">Boss Fight Leaderboard</a>
+        <a id="welcomeMessage">Welcome!</a>
       </div>
     <h1>Alien Shooter</h1>
 
@@ -25,6 +26,7 @@
         <button onclick="window.location.href = 'boss.html'">Boss fight</button>
         <button onclick="window.location.href = 'howToPlay.html'">How to Play</button>
     </div>
-    <audio autoplay loop src="../audio/mainMenu.mp3"></audio>
+    <!--<audio autoplay loop src="../audio/mainMenu.mp3"></audio> -->
+    <script src="../JS/index.js"></script>
 </body>
 </html>

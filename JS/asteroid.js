@@ -38,6 +38,7 @@ let gameHeader=document.getElementById("gameHeader");
 let playerShotSFX=new Audio("../audio/playerShot.mp3");
 let gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
 let mapTheme=document.getElementById("mapTheme");
+let asteroidTopScore=localStorage.getItem('asteroidTopScore');
 
 let player= {
     y:playerY,
@@ -88,6 +89,10 @@ function update(){ //Function to update the player and asteroids position
                 mapTheme.pause();
                 gameOverTheme.play();
                 gameHeader.innerText="Game Over";
+                if(newScore>parseInt(asteroidTopScore)){
+                    asteroidTopScore=newScore;
+                    localStorage.setItem('asteroidTopScore',asteroidTopScore);
+                }
             }
         }
     }

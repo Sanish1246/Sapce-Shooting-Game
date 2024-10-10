@@ -56,6 +56,7 @@ let bossShotSFX = new Audio("../audio/bossShot.mp3");
 let gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
 let victoryTheme = new Audio("../audio/victory.mp3");
 let bossTheme=document.getElementById("bossTheme");
+let bossTopScore=localStorage.getItem('bossTopScore');
 
 let bossShotImg=new Image()
 bossShotImg.src="../images/bossShot.png";
@@ -125,6 +126,10 @@ function update(){ //Function to update the player and enemy position
                 bossTheme.pause();
                 gameOverTheme.play();
                 gameHeader.innerText="Game Over";
+                if(newScore>parseInt(bossTopScore)){
+                    bossTopScore=newScore;
+                    localStorage.setItem('bossTopScore',bossTopScore);
+                }
             }
         }
     }
@@ -144,6 +149,10 @@ function update(){ //Function to update the player and enemy position
                 bossTheme.pause();
                 gameOverTheme.play();
                 gameHeader.innerText="Game Over";
+                if(newScore>parseInt(bossTopScore)){
+                    bossTopScore=newScore;
+                    localStorage.setItem('bossTopScore',bossTopScore);
+                }
             }
         }
         

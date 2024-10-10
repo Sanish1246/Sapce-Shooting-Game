@@ -39,6 +39,7 @@ let gameHeader=document.getElementById("gameHeader");
 let playerShotSFX=new Audio("../audio/playerShot.mp3");
 let gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
 let mapTheme=document.getElementById("mapTheme");
+let classicTopScore=localStorage.getItem('classicTopScore');
 
 let player= {
     y:playerY,
@@ -96,6 +97,10 @@ function update(){ //Function to update the player and enemy position
                 mapTheme.pause();
                 gameOverTheme.play();
                 gameHeader.innerText="Game Over";
+                if(newScore>parseInt(classicTopScore)){
+                    classicTopScore=newScore;
+                    localStorage.setItem('classicTopScore',classicTopScore);
+                }
             }
         }
     }
