@@ -18,7 +18,12 @@ body {
     font-size: 5rem;
     text-align:center;
     margin-top:0px;
-    animation: fadeIn 5s;
+    opacity: 1;
+    transition: opacity 1s ease; /* Smooth transition for fading */
+  }
+
+  .hidden {
+    opacity: 0; /* Hidden state */
   }
 
   ol{

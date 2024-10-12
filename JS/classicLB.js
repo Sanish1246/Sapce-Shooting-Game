@@ -1,7 +1,25 @@
+let currentUser=localStorage.getItem('currentUser');
+let welcomeMessage = document.getElementById('welcomeMessage');
+let logInOut=document.getElementById('logInOut');
+let Heading = document.getElementById('mainTitle');
+let isHidden = false;
 let users=[];
+
+setInterval(() => {
+    isHidden = !isHidden; // Toggle the isHidden variable
+    Heading.classList.toggle('hidden', isHidden); // Apply the hidden class based on the variable
+}, 750); // Change every 2 seconds (2000 milliseconds)
+
+if (currentUser != null){
+    let newWelcomeMessage = "Welcome " + currentUser + "!";
+    welcomeMessage.innerText=newWelcomeMessage;
+    logInOut.innerText="Log out"
+}
+
+
 if(localStorage.getItem("users") !=null){ //If there are already existing users
     users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
-    var leaderboard = document.getElementById('leaderboard');
+    var leaderboard = document.getElementById('rankings');
     let classicUsers=sortByClassic(users);
     console.log(classicUsers);
     for(i=0;i<classicUsers.length;i++){

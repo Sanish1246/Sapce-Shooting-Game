@@ -24,7 +24,6 @@ let enemyVelY=1;
 
 let enemyRow=2;
 let enemyCol=3;
-let remaining=0;
 
 let bossWidth=tile*4;
 let bossHeight=tile*2;
@@ -47,8 +46,8 @@ let spawnPosition;
 let bossVelX=1;
 let bossShootDecision;
 let bossShoots;
+let bossShootArray;
 let spawnPositions=[-999,-998,-997];
-let bossBullet;
 let bossBulletVelY=10;
 
 let playerShotSFX=new Audio("../audio/playerShot.mp3");
@@ -81,6 +80,12 @@ let boss={
     alive:true
 }
 
+let bossShoot = {
+    x: boss.x + bossWidth*15/32,
+    y: boss.y,
+    width:tile/8,
+    height:tile,
+}
 
 
 window.onload = ()=>{
@@ -147,10 +152,12 @@ function update(){ //Function to update the player and enemy position
         setInterval(bossShot,750);
         
         if(bossShot=1){
-            let bossBullet=bossShoots;
+            bossBullet=bossShoots;
             bossBullet.y+=bossBulletVelY;
+            console.log(bossBullet.y)
             bossShotSFX.play();
             context.drawImage(bossShotImg,bossBullet.x,bossBullet.y,bossBullet.width,bossBullet.height);
+            
 
             if (collision(bossBullet,player)){
                 gameOver=true;
@@ -159,7 +166,7 @@ function update(){ //Function to update the player and enemy position
                 gameHeader.innerText="Game Over";
                 updateScores(newScore);
             }
-        }
+        } 
         
     }
 
@@ -173,8 +180,7 @@ function update(){ //Function to update the player and enemy position
             if (!shot.used && enemy.alive && collision(shot,enemy)){  //Checking if a shot killed an enemy
                 shot.used=true;
                 enemy.alive=false;
-                remaining--;
-                newScore+=100;
+                newScore+=100; //
             }
         }
 
@@ -182,6 +188,7 @@ function update(){ //Function to update the player and enemy position
             boss.hits++;
             shot.used=true;
             newScore+=100;
+            context.clearRect(boss.x, boss.y, boss.width, boss.height); //Will make the boss image flicker upon getting hit
             currentHealth--;
             bossHealth.innerText=Math.floor((currentHealth)/50*100) + "%";
             if(boss.hits>=50){
@@ -192,6 +199,7 @@ function update(){ //Function to update the player and enemy position
                 bossTheme.pause();
                 victoryTheme.play();
                 gameHeader.innerText="You win";
+                context.clearRect(boss.x, boss.y, boss.width, boss.height);
                 updateScores(newScore);
             }
         }
@@ -272,20 +280,15 @@ function bossShot(){
     if(gameOver){  //The player will not be able to shoot at game over
         return;
     }
-    bossShootDecision=Math.floor(Math.random()*2);
-    console.log(bossShootDecision);
-    if (bossShootDecision=1){
-        bossShoots = {
-            x: boss.x + bossWidth*15/32,
-            y: boss.y,
-            width:tile/8,
-            height:tile,
-        }
-        return bossShootDecision;
-    } else {
-        return 0;
+
+    bossShoots = {
+        x: boss.x + bossWidth*15/32,
+        y: boss.y,
+        width:tile/8,
+        height:tile,
     }
     
+    return 1;
 }
 
 function loadTopScores(){
@@ -295,6 +298,9 @@ function loadTopScores(){
       var leaderboard = document.getElementById('topTen');
       let bossUsers=sortByBoss(users);
       for(i=0;i<bossUsers.length;i++){
+        if(i==10){
+            break;
+        }
          let entry = document.createElement('li');
          entry.appendChild(document.createTextNode(bossUsers[i].userName + " " + bossUsers[i].bossTopScore + " pts"));
          leaderboard.appendChild(entry);

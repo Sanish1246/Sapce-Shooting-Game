@@ -92,7 +92,7 @@ function update(){ //Function to update the player and asteroids position
                 mapTheme.pause();
                 gameOverTheme.play();
                 gameHeader.innerText="Game Over";
-                updateScores(newscore);
+                updateScores(newScore);
             }
         }
     }
@@ -139,7 +139,7 @@ function move(e){
 }
 
 function createAsteroid() { //creating the enemies and their positions
-    for (let i=0;i<3;i++){
+    for (let i=0;i<4;i++){
         do{
             spawnPosition = Math.floor(Math.random() * (mapWidth) );
         } while (spawnPositions.indexOf(spawnPosition)!=-1 ||spawnPosition+asteroidWidth>mapWidth ||spawnPosition-tile<0); //Checking for out of bounds and for spawns in the same point
