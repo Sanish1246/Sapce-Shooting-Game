@@ -4,7 +4,7 @@ if(localStorage.getItem("users") !=null){ //If there are already existing users
     var leaderboard = document.getElementById('leaderboard');
     let classicUsers=sortByClassic(users);
     console.log(classicUsers);
-    for(i=0;i<=classicUsers.length;i++){
+    for(i=0;i<classicUsers.length;i++){
         let entry = document.createElement('li');
         entry.appendChild(document.createTextNode(classicUsers[i].userName + " " + classicUsers[i].classicTopScore + " pts"));
         leaderboard.appendChild(entry);
@@ -21,7 +21,6 @@ function sortByClassic(array){
         for (let j = 0; j < users.length - i - 1; j++) {
             if (users[j].classicTopScore <  users[j + 1].classicTopScore) {
                 [users[j], users[j + 1]] = [users[j + 1], users[j]];
-                console.log(users[j].classicTopScore);
                 Swapped = true;
             }
         }

@@ -57,6 +57,7 @@ let gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
 let victoryTheme = new Audio("../audio/victory.mp3");
 let bossTheme=document.getElementById("bossTheme");
 let bossTopScore=localStorage.getItem('bossTopScore');
+let currentUser=localStorage.getItem('currentUser');
 
 let bossShotImg=new Image()
 bossShotImg.src="../images/bossShot.png";
@@ -104,6 +105,18 @@ window.onload = ()=>{
     requestAnimationFrame(update);
     document.addEventListener("keydown",move);
     document.addEventListener("keyup",shoot); //releases a shot once the spacebar is released
+
+    let users=[];
+    if(localStorage.getItem("users") !=null){ //If there are already existing users
+      users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
+      var leaderboard = document.getElementById('topTen');
+      let bossUsers=sortByBoss(users);
+      for(i=0;i<bossUsers.length;i++){
+         let entry = document.createElement('li');
+         entry.appendChild(document.createTextNode(bossUsers[i].userName + " " + bossUsers[i].bossTopScore + " pts"));
+         leaderboard.appendChild(entry);
+      }
+    }
 }
 
 function update(){ //Function to update the player and enemy position
@@ -152,6 +165,13 @@ function update(){ //Function to update the player and enemy position
                 if(newScore>parseInt(bossTopScore)){
                     bossTopScore=newScore;
                     localStorage.setItem('bossTopScore',bossTopScore);
+                    let users=[];
+                    if(localStorage.getItem("users") !=null){ //If there are already existing users
+                        users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
+                    }
+                    let userIndex=users.findIndex(x => x.userName === currentUser);
+                    users[userIndex].bossTopScore=newScore;
+                    localStorage.setItem("users", JSON.stringify(users)); //Using stringify as localStorage accepts only strings to store the array of users
                 }
             }
         }
@@ -281,4 +301,24 @@ function bossShot(){
         }
     }
     return bossShootDecision;
+}
+
+function sortByBoss(array){
+    let users=array;
+    let Swapped;
+
+    for (let i = 0; i < users.length; i++) {
+        Swapped = false;
+
+        for (let j = 0; j < users.length - i - 1; j++) {
+            if (users[j].bossTopScore <  users[j + 1].bossTopScore) {
+                [users[j], users[j + 1]] = [users[j + 1], users[j]];
+                Swapped = true;
+            }
+        }
+        if (!Swapped) 
+            break;
+    }
+
+    return users;
 }

@@ -69,6 +69,22 @@ window.onload = ()=>{
     requestAnimationFrame(update);
     document.addEventListener("keydown",move);
     document.addEventListener("keyup",shoot); //releases a bullet once the spacebar is released
+
+    let users=[];
+    if(localStorage.getItem("users") !=null){ //If there are already existing users
+      users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
+      var leaderboard = document.getElementById('topTen');
+      let classicUsers=sortByClassic(users);
+      console.log(classicUsers);
+      for(i=0;i<classicUsers.length;i++){
+        if(i==10){
+            break;
+        }
+         let entry = document.createElement('li');
+         entry.appendChild(document.createTextNode(classicUsers[i].userName + " " + classicUsers[i].classicTopScore + " pts"));
+         leaderboard.appendChild(entry);
+      }
+    }
 }
 
 function update(){ //Function to update the player and enemy position
@@ -201,4 +217,24 @@ function collision(obj1,obj2){
            obj1.x+obj1.width>obj2.x && //bullet's top right corner surpasses alien's top left corner
            obj1.y<obj2.y+obj2.height &&//bullet's top left corner has not reached alien's bottom left corner
            obj1.y+obj1.height>obj2.y; //bullet's bottom left corner has not passed alien's top left corner
+}
+
+function sortByClassic(array){
+    let users=array;
+    let Swapped;
+
+    for (let i = 0; i < users.length; i++) {
+        Swapped = false;
+
+        for (let j = 0; j < users.length - i - 1; j++) {
+            if (users[j].classicTopScore <  users[j + 1].classicTopScore) {
+                [users[j], users[j + 1]] = [users[j + 1], users[j]];
+                Swapped = true;
+            }
+        }
+        if (!Swapped) 
+            break;
+    }
+
+    return users;
 }
