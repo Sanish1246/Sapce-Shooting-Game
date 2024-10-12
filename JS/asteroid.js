@@ -64,25 +64,12 @@ window.onload = ()=>{
     asteroidImg.src="../images/asteroid.png";
    
     setInterval(createAsteroid,1250);
+    loadTopScores();
 
     requestAnimationFrame(update);
     document.addEventListener("keydown",move);
     document.addEventListener("keyup",shoot); //releases a bullet once the spacebar is released
-
-    let users=[];
-    if(localStorage.getItem("users") !=null){ //If there are already existing users
-      users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
-      var leaderboard = document.getElementById('topTen');
-      let asteroidUsers=sortByAsteroid(users);
-      for(i=0;i<asteroidUsers.length;i++){
-        if(i==10){
-            break;
-        }
-        let entry = document.createElement('li');
-        entry.appendChild(document.createTextNode(asteroidUsers[i].userName + " " + asteroidUsers[i].asteroidTopScore + " pts"));
-        leaderboard.appendChild(entry);
-      }
-    }
+    
 }
 
 function update(){ //Function to update the player and asteroids position
@@ -105,18 +92,7 @@ function update(){ //Function to update the player and asteroids position
                 mapTheme.pause();
                 gameOverTheme.play();
                 gameHeader.innerText="Game Over";
-                if(newScore>parseInt(asteroidTopScore)){
-                    asteroidTopScore=newScore;
-                    localStorage.setItem('asteroidTopScore',asteroidTopScore);
-                }
-                let users=[];
-                if(localStorage.getItem("users") !=null){ //If there are already existing users
-                    users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
-                }
-                let userIndex=users.findIndex(x => x.userName === currentUser);
-                users[userIndex].asteroidTopScore=newScore;
-                localStorage.setItem("users", JSON.stringify(users)); //Using stringify as localStorage accepts only strings to store the array of users
-
+                updateScores(newscore);
             }
         }
     }
@@ -209,6 +185,37 @@ function collision(obj1,obj2){
            obj1.x+obj1.width>obj2.x && //bullet's top right corner surpasses alien's top left corner
            obj1.y<obj2.y+obj2.height &&//bullet's top left corner has not reached alien's bottom left corner
            obj1.y+obj1.height>obj2.y; //bullet's bottom left corner has not passed alien's top left corner
+}
+
+function loadTopScores(){
+    let users=[];
+    if(localStorage.getItem("users") !=null){ //If there are already existing users
+      users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
+      var leaderboard = document.getElementById('topTen');
+      let asteroidUsers=sortByAsteroid(users);
+      for(i=0;i<asteroidUsers.length;i++){
+        if(i==10){
+            break;
+        }
+        let entry = document.createElement('li');
+        entry.appendChild(document.createTextNode(asteroidUsers[i].userName + " " + asteroidUsers[i].asteroidTopScore + " pts"));
+        leaderboard.appendChild(entry);
+      }
+    }
+}
+
+function updateScores(newScore){
+    if(newScore>parseInt(asteroidTopScore)){
+        asteroidTopScore=newScore;
+        localStorage.setItem('asteroidTopScore',asteroidTopScore);
+    }
+    let users=[];
+    if(localStorage.getItem("users") !=null){ //If there are already existing users
+        users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
+    }
+    let userIndex=users.findIndex(x => x.userName === currentUser);
+    users[userIndex].asteroidTopScore=newScore;
+    localStorage.setItem("users", JSON.stringify(users)); //Using stringify as localStorage accepts only strings to store the array of users
 }
 
 function sortByAsteroid(array){

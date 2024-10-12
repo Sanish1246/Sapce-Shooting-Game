@@ -81,6 +81,8 @@ let boss={
     alive:true
 }
 
+
+
 window.onload = ()=>{
     map=document.getElementById("map");  //Creating the game map
     map.width=mapWidth;
@@ -101,22 +103,11 @@ window.onload = ()=>{
     enemyImg.src="../images/alien.png";
     
     setInterval(createEnemy,3000);
+    loadTopScores();
 
     requestAnimationFrame(update);
     document.addEventListener("keydown",move);
     document.addEventListener("keyup",shoot); //releases a shot once the spacebar is released
-
-    let users=[];
-    if(localStorage.getItem("users") !=null){ //If there are already existing users
-      users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
-      var leaderboard = document.getElementById('topTen');
-      let bossUsers=sortByBoss(users);
-      for(i=0;i<bossUsers.length;i++){
-         let entry = document.createElement('li');
-         entry.appendChild(document.createTextNode(bossUsers[i].userName + " " + bossUsers[i].bossTopScore + " pts"));
-         leaderboard.appendChild(entry);
-      }
-    }
 }
 
 function update(){ //Function to update the player and enemy position
@@ -139,10 +130,7 @@ function update(){ //Function to update the player and enemy position
                 bossTheme.pause();
                 gameOverTheme.play();
                 gameHeader.innerText="Game Over";
-                if(newScore>parseInt(bossTopScore)){
-                    bossTopScore=newScore;
-                    localStorage.setItem('bossTopScore',bossTopScore);
-                }
+                updateScores(newScore);
             }
         }
     }
@@ -150,7 +138,14 @@ function update(){ //Function to update the player and enemy position
     if(boss.alive){
         context.drawImage(bossImg,boss.x,boss.y,boss.width,boss.height);
         boss.x+=bossVelX;
+
+        if (boss.x+boss.width >=map.width||boss.x<=0){
+            bossVelX*=-1; //Inverting the movement direction on collision with the edge of the map
+            context.drawImage(bossImg,boss.x,boss.y,boss.width,boss.height);
+        } 
+
         setInterval(bossShot,750);
+        
         if(bossShot=1){
             let bossBullet=bossShoots;
             bossBullet.y+=bossBulletVelY;
@@ -162,24 +157,10 @@ function update(){ //Function to update the player and enemy position
                 bossTheme.pause();
                 gameOverTheme.play();
                 gameHeader.innerText="Game Over";
-                if(newScore>parseInt(bossTopScore)){
-                    bossTopScore=newScore;
-                    localStorage.setItem('bossTopScore',bossTopScore);
-                    let users=[];
-                    if(localStorage.getItem("users") !=null){ //If there are already existing users
-                        users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
-                    }
-                    let userIndex=users.findIndex(x => x.userName === currentUser);
-                    users[userIndex].bossTopScore=newScore;
-                    localStorage.setItem("users", JSON.stringify(users)); //Using stringify as localStorage accepts only strings to store the array of users
-                }
+                updateScores(newScore);
             }
         }
         
-        if (boss.x+boss.width >=map.width||boss.x<=0){
-            bossVelX*=-1; //Inverting the movement direction on collision with the edge of the map
-            context.drawImage(bossImg,boss.x,boss.y,boss.width,boss.height);
-        } 
     }
 
     for(let j=0;j<shotArray.length;j++){
@@ -211,6 +192,7 @@ function update(){ //Function to update the player and enemy position
                 bossTheme.pause();
                 victoryTheme.play();
                 gameHeader.innerText="You win";
+                updateScores(newScore);
             }
         }
     }
@@ -292,15 +274,46 @@ function bossShot(){
     }
     bossShootDecision=Math.floor(Math.random()*2);
     console.log(bossShootDecision);
-    if (bossShootDecision==1){
+    if (bossShootDecision=1){
         bossShoots = {
             x: boss.x + bossWidth*15/32,
             y: boss.y,
             width:tile/8,
             height:tile,
         }
+        return bossShootDecision;
+    } else {
+        return 0;
     }
-    return bossShootDecision;
+    
+}
+
+function loadTopScores(){
+    let users=[];
+    if(localStorage.getItem("users") !=null){ //If there are already existing users
+      users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
+      var leaderboard = document.getElementById('topTen');
+      let bossUsers=sortByBoss(users);
+      for(i=0;i<bossUsers.length;i++){
+         let entry = document.createElement('li');
+         entry.appendChild(document.createTextNode(bossUsers[i].userName + " " + bossUsers[i].bossTopScore + " pts"));
+         leaderboard.appendChild(entry);
+      }
+    }
+}
+
+function updateScores(newScore){
+    if(newScore>parseInt(bossTopScore)){
+        bossTopScore=newScore;
+        localStorage.setItem('bossTopScore',bossTopScore);
+        let users=[];
+        if(localStorage.getItem("users") !=null){ //If there are already existing users
+            users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
+        }
+        let userIndex=users.findIndex(x => x.userName === currentUser);
+        users[userIndex].bossTopScore=newScore;
+        localStorage.setItem("users", JSON.stringify(users)); //Using stringify as localStorage accepts only strings to store the array of users
+    }
 }
 
 function sortByBoss(array){
