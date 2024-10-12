@@ -40,6 +40,7 @@ let playerShotSFX=new Audio("../audio/playerShot.mp3");
 let gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
 let mapTheme=document.getElementById("mapTheme");
 let classicTopScore=localStorage.getItem('classicTopScore');
+let currentUser=localStorage.getItem('currentUser');
 
 let player= {
     y:playerY,
@@ -100,6 +101,14 @@ function update(){ //Function to update the player and enemy position
                 if(newScore>parseInt(classicTopScore)){
                     classicTopScore=newScore;
                     localStorage.setItem('classicTopScore',classicTopScore);
+                    let users=[];
+                    if(localStorage.getItem("users") !=null){ //If there are already existing users
+                        users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
+                    }
+                    let userIndex=users.findIndex(x => x.userName === currentUser);
+                    users[userIndex].classicTopScore=newScore;
+                    localStorage.setItem("users", JSON.stringify(users)); //Using stringify as localStorage accepts only strings to store the array of users
+
                 }
             }
         }
