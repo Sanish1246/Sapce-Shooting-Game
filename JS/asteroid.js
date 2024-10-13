@@ -23,7 +23,7 @@ let asteroidImg;
 let asteroidVelY=0.75;
 
 let spawnPosition;
-let spawnPositions=[-999,-998,-997];
+let spawnPositions=[-1,-2,-3,-4];
 
 let shotArray=[];
 let shootVelY=-10;
@@ -160,7 +160,7 @@ function createAsteroid() { //creating the enemies and their positions
     if (asteroidVelY<5){
         asteroidVelY+=0.2;
     }
-    spawnPositions=[-1,-2,-3]
+    spawnPositions=[-1,-2,-3,-4];
 }
 
 function shoot(e){

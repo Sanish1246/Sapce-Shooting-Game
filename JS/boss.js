@@ -44,9 +44,8 @@ let gameHeader=document.getElementById("gameHeader");
 
 let spawnPosition;
 let bossVelX=1;
-let bossShootDecision;
+let willShoot;
 let bossShoots;
-let bossShootArray;
 let spawnPositions=[-999,-998,-997];
 let bossBulletVelY=10;
 
@@ -80,13 +79,6 @@ let boss={
     alive:true
 }
 
-let bossShoot = {
-    x: boss.x + bossWidth*15/32,
-    y: boss.y,
-    width:tile/8,
-    height:tile,
-}
-
 
 window.onload = ()=>{
     map=document.getElementById("map");  //Creating the game map
@@ -114,6 +106,8 @@ window.onload = ()=>{
     document.addEventListener("keydown",move);
     document.addEventListener("keyup",shoot); //releases a shot once the spacebar is released
 }
+
+setInterval(bossShot, 750); //fucntion to make the boss shoot at random time intervals
 
 function update(){ //Function to update the player and enemy position
     if(gameOver){
@@ -148,16 +142,12 @@ function update(){ //Function to update the player and enemy position
             bossVelX*=-1; //Inverting the movement direction on collision with the edge of the map
             context.drawImage(bossImg,boss.x,boss.y,boss.width,boss.height);
         } 
-
-        setInterval(bossShot,750);
         
-        if(bossShot=1){
+        if(bossShoots){ //If a boss bullet has been created
             bossBullet=bossShoots;
             bossBullet.y+=bossBulletVelY;
-            console.log(bossBullet.y)
             bossShotSFX.play();
             context.drawImage(bossShotImg,bossBullet.x,bossBullet.y,bossBullet.width,bossBullet.height);
-            
 
             if (collision(bossBullet,player)){
                 gameOver=true;
@@ -165,6 +155,10 @@ function update(){ //Function to update the player and enemy position
                 gameOverTheme.play();
                 gameHeader.innerText="Game Over";
                 updateScores(newScore);
+            }
+
+            if (bossShoots.y > mapHeight) {
+                bossShoots = null;  // Removing the bullet once it exits the screen
             }
         } 
         
@@ -192,7 +186,6 @@ function update(){ //Function to update the player and enemy position
             currentHealth--;
             bossHealth.innerText=Math.floor((currentHealth)/50*100) + "%";
             if(boss.hits>=50){
-                console.log(boss.hits);
                 newScore+=1000;
                 boss.alive=false;
                 gameOver=true;
@@ -280,15 +273,15 @@ function bossShot(){
     if(gameOver){  //The player will not be able to shoot at game over
         return;
     }
-
-    bossShoots = {
-        x: boss.x + bossWidth*15/32,
-        y: boss.y,
-        width:tile/8,
-        height:tile,
+    willShoot=Math.floor(Math.random()*2);
+    if (willShoot==1){
+        bossShoots = {
+            x: boss.x + bossWidth*15/32,
+            y: boss.y,
+            width:tile/8,
+            height:tile,
+        }
     }
-    
-    return 1;
 }
 
 function loadTopScores(){
