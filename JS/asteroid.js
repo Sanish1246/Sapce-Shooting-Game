@@ -49,6 +49,7 @@ let player= {
 }
 
 window.onload = ()=>{
+
     map=document.getElementById("map");  //Creating the game map
     map.width=mapWidth;
     map.height=mapHeight;
@@ -206,16 +207,19 @@ function loadTopScores(){
 
 function updateScores(newScore){
     if(newScore>parseInt(asteroidTopScore)){
+        console.log(asteroidTopScore);
         asteroidTopScore=newScore;
+        console.log(asteroidTopScore);
         localStorage.setItem('asteroidTopScore',asteroidTopScore);
+        let users=[];
+        if(localStorage.getItem("users") !=null){ //If there are already existing users
+            users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
+        let userIndex=users.findIndex(x => x.userName === currentUser);
+        users[userIndex].asteroidTopScore=newScore;
+        console.log(newScore)
+        localStorage.setItem("users", JSON.stringify(users)); //Using stringify as localStorage accepts only strings to store the array of users
+        }
     }
-    let users=[];
-    if(localStorage.getItem("users") !=null){ //If there are already existing users
-        users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
-    }
-    let userIndex=users.findIndex(x => x.userName === currentUser);
-    users[userIndex].asteroidTopScore=newScore;
-    localStorage.setItem("users", JSON.stringify(users)); //Using stringify as localStorage accepts only strings to store the array of users
 }
 
 function sortByAsteroid(array){
