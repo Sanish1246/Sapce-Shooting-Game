@@ -183,6 +183,7 @@ function shoot(e){
         }
         shotArray.push(bullet);
         playerShotSFX.play();
+        playerShotSFX.currentTime = 0;
     }
 }
 

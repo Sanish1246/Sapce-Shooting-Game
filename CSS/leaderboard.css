@@ -20,6 +20,10 @@ body {
     margin-top:0px;
     opacity: 1;
     transition: opacity 1s ease; /* Smooth transition for fading */
+    text-shadow: -1px 1px 0 #000,
+    1px 1px 0 #000,
+    1px -1px 0 #000,
+    -1px -1px 0 #000
   }
 
   .hidden {
@@ -34,6 +38,11 @@ body {
   }
 
   li{
+    text-shadow: -1px 1px 0 #000,
+    1px 1px 0 #000,
+    1px -1px 0 #000,
+    -1px -1px 0 #000;
+    outline-width: 50px;
     font-size:2rem;
   }
 

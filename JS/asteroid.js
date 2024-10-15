@@ -64,7 +64,7 @@ window.onload = ()=>{
     asteroidImg=new Image();
     asteroidImg.src="../images/asteroid.png";
    
-    setInterval(createAsteroid,1250);
+    setInterval(createAsteroid,1000);
     loadTopScores();
 
     requestAnimationFrame(update);
@@ -178,6 +178,7 @@ function shoot(e){
         }
         shotArray.push(bullet);
         playerShotSFX.play();
+        playerShotSFX.currentTime = 0;
     }
 }
 

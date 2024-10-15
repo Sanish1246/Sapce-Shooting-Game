@@ -258,6 +258,7 @@ function shoot(e){
         }
         shotArray.push(bullet);
         playerShotSFX.play();
+        playerShotSFX.currentTime = 0;
     }
 }
 
@@ -278,7 +279,7 @@ function bossShot(){
         bossShoots = {
             x: boss.x + bossWidth*15/32,
             y: boss.y,
-            width:tile/8,
+            width:tile/4,
             height:tile,
         }
     }

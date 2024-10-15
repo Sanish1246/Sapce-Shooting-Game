@@ -11,6 +11,6 @@ if (currentUser != null){
 }
 
 setInterval(() => {
-    isHidden = !isHidden; // Toggle the isHidden variable
+    isHidden = !isHidden; 
     Heading.classList.toggle('hidden', isHidden); // Apply the hidden class based on the variable
-}, 750); // Change every 2 seconds (2000 milliseconds)
+}, 750); 

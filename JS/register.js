@@ -1,4 +1,4 @@
-function registerUser(){
+function registerUser(event){
     
     let newUserName=document.getElementById("username");
     let newPassword=document.getElementById("password");
@@ -9,8 +9,16 @@ function registerUser(){
     }
     
     if(users.find(o => o.userName === newUserName.value)){ //Checking if the username already exists
-        alert("Username already taken!")
-    } else {
+        alert("Username already taken!");
+    }else if(newPassword.value.length<8){
+        alert("Password too short!");
+    }else if(checkUpper()==false) {
+        alert("Password must contain at least 1 upper case character!");
+    } else if(checkLower()==false) {
+        alert("Password must contain at least 1 lower case character!");
+    } else if(checkNumber()==false) {
+        alert("Password must contain at least 1 number!");
+    }else {
         const user={
             userName: newUserName.value,
             password: newPassword.value,
@@ -31,3 +39,16 @@ function registerUser(){
         window.open("../HTML/index.html","_self");
     }
 }
+
+function checkUpper(){
+    console.log(password.value)
+    return password.value !== password.value.toLowerCase();
+}
+
+function checkLower(){
+    return password.value !== password.value.toUpperCase();
+}
+
+function checkNumber() {
+    return /\d/.test(password.value);
+  }
