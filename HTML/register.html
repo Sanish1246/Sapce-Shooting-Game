@@ -10,17 +10,18 @@
     <title>Register</title>
 </head>
 <body>
-    <h1>Alien Shooter</h1>
+    <h1>Neo Galaxy Shooters</h1>
 
-    <form>
+    <div class="wrapper">
+      <form class="formContainer">
         <div class="container">
           <h1>Register 👾</h1>
           <p>Please enter your details to register.</p>
       
-          <label for="Username"><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="username" id="username" required>
+          <label for="Username"><b>Username</b></label><br>
+          <input type="text" placeholder="Enter Username" name="username" id="username" required><br>
       
-          <label for="psw"><b>Password</b></label>
+          <label for="psw"><b>Password</b></label><br>
           <input type="password" placeholder="Enter Password" name="psw" id="password" required>
       
           <p>The password must have at least 1 upper case letter, 1 lower case letter, 1 number and must be at least 8 characters long.</p>
@@ -29,6 +30,7 @@
           <p>Existing Player? <a href="login.html">Login</a>.</p>
         </div>
       </form>
+    </div>
 
       <script src="../JS/register.js"></script>
 </body>

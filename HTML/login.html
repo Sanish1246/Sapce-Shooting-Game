@@ -10,24 +10,27 @@
     <title>Login</title>
 </head>
 <body>
-    <h1>Alien Shooter</h1>
+    <h1>Neo Galaxy Shooters</h1>
 
-    <form>
-        <div class="container">
-          <h1>Login 👾</h1>
-          <p>Please enter your details to login.</p>
-      
-          <label for="Username"><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="Username" id="username" required>
-      
-          <label for="psw"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="psw" id="password" required>
-      
-          <p>Always remember to keep your credentials secure.</p>
-          <button type="submit" class="login" onclick="loginUser(event)">Login</button>
 
-          <p>New Player? <a href="register.html">Register</a>.</p>
-      </form>
+    <div class="wrapper">
+        <form class="formContainer">
+            <div class="container">
+              <h1>Login 👾</h1>
+              <p>Please enter your details to login.</p>
+          
+              <label for="Username"><b>Username</b></label>
+              <input type="text" placeholder="Enter Username" name="Username" id="username" required>
+          
+              <label for="psw"><b>Password</b></label>
+              <input type="password" placeholder="Enter Password" name="psw" id="password" required>
+          
+              <p>Always remember to keep your credentials secure.</p>
+              <button type="submit" class="login" onclick="loginUser(event)">Login</button>
+    
+              <p>New Player? <a href="register.html">Register</a>.</p>
+          </form>
+    </div>
       <script src="../JS/login.js" defer></script>
 </body>
 </html>
