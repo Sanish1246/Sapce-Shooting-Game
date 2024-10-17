@@ -47,3 +47,37 @@ export class Asteroid{
         this.alive=true;
     }
 }
+
+export class boss{
+    constructor(tile,col){
+        this.bossImg = new Image();
+        this.bossImg.src="../images/boss.png";
+        this.x=tile*col/2-3*tile;
+        this.y=0;
+        this.width=tile*4;
+        this.height=tile*2;
+        this.hits=0;
+        this.alive=true;
+    }
+}
+
+export class bossBullet{
+    constructor(tile,bossX,bossY){
+        this.x=bossX + tile*4*15/32;
+        this.y=bossY;
+        this.width=tile/4;
+        this.height=tile;
+    }
+}
+
+export class bossAlien{    //creating each enemy as objects one by one
+    constructor(tile,spawn){
+        this.enemyImg = new Image();
+        this.enemyImg.src = "../images/alien.png";
+        this.x=spawn; 
+        this.y=tile*2;
+        this.width=tile * 2;
+        this.height=tile;
+        this.alive=true;
+    }
+}

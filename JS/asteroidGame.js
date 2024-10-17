@@ -189,7 +189,7 @@ createAsteroid() { //creating the enemies and their positions
  updateScores(){
     if(this.newScore>parseInt(this.asteroidTopScore)){
         this.asteroidTopScore=this.newScore;
-        localStorage.setItem('classicTopScore',this.asteroidTopScore);
+        localStorage.setItem('TopScore',this.asteroidTopScore);
         let users=[];
         if(localStorage.getItem("users") !=null){ //If there are already existing users
             users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
