@@ -14,26 +14,36 @@ export class player {
 }
 
 export class alien {
-    constructor(i,j,newEnemyVelX){
-        this.tile = 32;
+    constructor(tile,i,j,newEnemyVelX){
         this.enemyImg = new Image();
         this.enemyImg.src = "../images/alien.png";
-        this.x= this.tile + i*this.tile * 2;  
-        this.y= this.tile + j*this.tile;
-        this.width=this.tile * 2;
-        this.height=this.tile;
+        this.x= tile + i*tile * 2;  
+        this.y= tile + j*tile;
+        this.width=tile * 2;
+        this.height=tile;
         this.alive=true;
         this.enemyVelX = newEnemyVelX;
     }
 }
 
 export class playerShot{
-    constructor(newPlayerX,newPlayerY,newPlayerWidth){
-        this.tile = 32;
+    constructor(tile,newPlayerX,newPlayerY,newPlayerWidth){
         this.x= newPlayerX + newPlayerWidth*15/32,
         this.y=newPlayerY,
-        this.width=this.tile/8,
-        this.height=this.tile,
-        this.used=false
+        this.width=tile/8,
+        this.height=tile,
+        this.used=false;
+    }
+}
+
+export class Asteroid{
+    constructor(tile,spawnPosition){
+        this.img=new Image();
+        this.img.src = "../images/asteroid.png";
+        this.x=spawnPosition; 
+        this.y=0;
+        this.width=tile*2;
+        this.height=tile;
+        this.alive=true;
     }
 }
