@@ -24,7 +24,9 @@ function registerUser(event){
             password: newPassword.value,
             classicTopScore:0,
             asteroidTopScore:0,
-            bossTopScore:0
+            bossTopScore:0,
+            bossDefeated:false,
+            challengeCompleted:false
         }
     
         users.push(user);
@@ -35,6 +37,8 @@ function registerUser(event){
         localStorage.setItem('classicTopScore', user.classicTopScore);
         localStorage.setItem('asteroidTopScore', user.asteroidTopScore);
         localStorage.setItem('bossTopScore', user.bossTopScore);
+        localStorage.setItem('bossDefeated', user.bossDefeated);
+        localStorage.setItem('challengeCompleted', user.challengeCompleted);
         event.preventDefault(); //Prevents the form from reloading the page
         window.open("../HTML/index.html","_self");
     }

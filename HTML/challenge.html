@@ -7,11 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet"> 
-    <title>Boss fight</title>
+    <title>Challenge mode</title>
 </head>
 <body>
-    <audio id="bossTheme" autoplay loop src="../audio/bossTheme.mp3"></audio>
-    <h1 id="gameHeader">Boss fight</h1>
+    <h1 id="gameHeader">Challenge mode</h1>
     <div id="gameContainer">
         <canvas id="map"></canvas>
         <div id="leaderboard">
@@ -25,12 +24,9 @@
             <h2>Boss Health</h2>
             <h2 id="bossHealth">100%</h2>
             <button onclick="window.location.href = 'index.html'">Main Menu</button>
-            <button onclick="window.location.href = 'boss.html'">Restart</button>
+            <button onclick="window.location.href = 'challenge.html'">Restart</button>
         </div>
 
     </div>
-    <script type="module" src="../JS/boss.js"></script>
-    <script type="module" src="../JS/bossGame.js"></script>
-    <script type="module" src="../JS/gameAssets.js"></script>
 </body>
 </html>

@@ -44,6 +44,8 @@ export class bossGame{
 
         this.bossTopScore = localStorage.getItem('bossTopScore');
         this.currentUser = localStorage.getItem('currentUser');
+        this.bossDefeated=localStorage.getItem('bossDefeated');
+        console.log(this.bossDefeated)
 
         this.player=new player(this.tile,this.row,this.col);
         this.boss=new boss(this.tile,this.col);
@@ -217,6 +219,7 @@ createEnemy() { //creating the enemies and their positions
                 this.victoryTheme.play();
                 this.gameHeader.innerText="You win";
                 this.context.clearRect(this.boss.x, this.boss.y, this.boss.width, this.boss.height);
+                this.bossDefeated=true;
                 this.updateScores(this.newScore);
             }
         }
@@ -265,18 +268,20 @@ createEnemy() { //creating the enemies and their positions
  }
 
  updateScores(){
+    let users=[];
+    if(localStorage.getItem("users") !=null){ //If there are already existing users
+        users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
+    }
+    let userIndex=users.findIndex(x => x.userName === this.currentUser);
+    users[userIndex].bossDefeated=this.bossDefeated;
+    localStorage.setItem("bossDefeated",this.bossDefeated);
+    console.log(this.bossDefeated)
     if(this.newScore>parseInt(this.bossTopScore)){
         this.bossTopScore=this.newScore;
         localStorage.setItem('bossTopScore',this.bossTopScore);
-        let users=[];
-        if(localStorage.getItem("users") !=null){ //If there are already existing users
-            users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
-        }
-        let userIndex=users.findIndex(x => x.userName === this.currentUser);
         users[userIndex].bossTopScore=this.newScore;
-        localStorage.setItem("users", JSON.stringify(users)); //Using stringify as localStorage accepts only strings to store the array of users
-
     }
+    localStorage.setItem("users", JSON.stringify(users)); //Using stringify as localStorage accepts only strings to store the array of users
  }
 
  sortByBoss(array){
