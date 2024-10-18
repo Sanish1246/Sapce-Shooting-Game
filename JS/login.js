@@ -17,6 +17,7 @@ function loginUser(event){
             localStorage.setItem('classicTopScore', users[userIndex].classicTopScore);
             localStorage.setItem('asteroidTopScore', users[userIndex].asteroidTopScore);
             localStorage.setItem('bossTopScore', users[userIndex].bossTopScore);
+            localStorage.setItem('challengeTopScore', users[userIndex].challengeTopScore);
             localStorage.setItem('bossDefeated',users[userIndex].bossDefeated);
             localStorage.setItem('challengeCompleted',users[userIndex].challengeCompleted);
 

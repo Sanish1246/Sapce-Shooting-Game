@@ -10,6 +10,7 @@
     <title>Challenge mode</title>
 </head>
 <body>
+    <audio id="challengeTheme" autoplay loop src="../audio/challengeTheme.mp3"></audio>
     <h1 id="gameHeader">Challenge mode</h1>
     <div id="gameContainer">
         <canvas id="map"></canvas>
@@ -26,7 +27,10 @@
             <button onclick="window.location.href = 'index.html'">Main Menu</button>
             <button onclick="window.location.href = 'challenge.html'">Restart</button>
         </div>
-
     </div>
+
+    <script type="module" src="../JS/challenge.js"></script> 
+    <script type="module" src="../JS/challengeGame.js"></script>
+    <script type="module" src="../JS/gameAssets.js"></script>
 </body>
 </html>

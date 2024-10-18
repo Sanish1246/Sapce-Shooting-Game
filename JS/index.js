@@ -1,19 +1,21 @@
 let currentUser=localStorage.getItem('currentUser');
-let bossDefeated=localStorage.getItem('bossDefeated');
-let challengeCompleted=localStorage.getItem('challengeCompleted');
+let bossDefeated=localStorage.getItem('bossDefeated')==='true';
+let challengeCompleted=localStorage.getItem('challengeCompleted')==='true';
 
 let welcomeMessage = document.getElementById('welcomeMessage');
 let logInOut=document.getElementById('logInOut');
-let Heading = document.getElementById('mainTitle');
+let heading = document.getElementById('mainTitle');
 let challengeButton=document.getElementById('challengeButton');
-
-console.log(bossDefeated)
-
+let challengeLB=document.getElementById('challengeLB');
 let isHidden = false;
+
+if(bossDefeated==true){
+    challengeLB.innerText="Challenge Mode Rankings"
+}
 
 setInterval(() => {
     isHidden = !isHidden; 
-    Heading.classList.toggle('hidden', isHidden); // Apply the hidden class based on the variable
+    heading.classList.toggle('hidden', isHidden); // Apply the hidden class based on the variable
 }, 750); 
 
 if (currentUser != null){
@@ -22,12 +24,18 @@ if (currentUser != null){
     logInOut.innerText="Log out"
 }
 
-if (bossDefeated=="true"){
+if (bossDefeated==true && challengeButton!=null){
+    challengeButton.style.color = "red";
     challengeButton.innerText="Challenge mode";
 }
 
+if (challengeCompleted==true){
+    challengeButton.style.color = "green";
+    challengeButton.innerText="Challenge mode 👑";
+}
+
 function checkRequirement(){
-    if(bossDefeated=="true" && currentUser!=null){
+    if(bossDefeated==true && currentUser!=null){
         window.open("../HTML/challenge.html","_self");
     } else {
         window.alert("You must login and complete the boss fight to unlock this mode!");

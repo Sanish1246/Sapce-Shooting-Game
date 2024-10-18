@@ -25,6 +25,7 @@ function registerUser(event){
             classicTopScore:0,
             asteroidTopScore:0,
             bossTopScore:0,
+            challengeTopScore:0,
             bossDefeated:false,
             challengeCompleted:false
         }
@@ -36,6 +37,7 @@ function registerUser(event){
         localStorage.setItem('password', newPassword.value);
         localStorage.setItem('classicTopScore', user.classicTopScore);
         localStorage.setItem('asteroidTopScore', user.asteroidTopScore);
+        localStorage.setItem('challengeTopScore', user.challengeTopScore);
         localStorage.setItem('bossTopScore', user.bossTopScore);
         localStorage.setItem('bossDefeated', user.bossDefeated);
         localStorage.setItem('challengeCompleted', user.challengeCompleted);

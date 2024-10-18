@@ -55,6 +55,7 @@ export class classicGame{
             this.enemyImg = new Image();
             this.enemyImg.src = "../images/alien.png";
 
+            setInterval(() => {this.createAsteroid()},1250);
             this.createEnemy();
             this.loadTopScores();
 
