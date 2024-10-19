@@ -35,7 +35,9 @@ export class bossGame{
         this.playerShotSFX = new Audio("../audio/playerShot.mp3");
         this.bossShotSFX = new Audio("../audio/bossShot.mp3");
         this.gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
+        this.defeatEnemySFX = new Audio("../audio/defeatEnemy.mp3");
         this.victoryTheme = new Audio("../audio/victory.mp3");
+        this.challengeUnlocked = new Audio("../audio/challengeUnlocked.mp3")
         this.bossTheme=document.getElementById("bossTheme");
 
         this.bossHealth=document.getElementById("bossHealth");;
@@ -45,7 +47,6 @@ export class bossGame{
         this.bossTopScore = localStorage.getItem('bossTopScore');
         this.currentUser = localStorage.getItem('currentUser');
         this.bossDefeated=localStorage.getItem('bossDefeated');
-        console.log(this.bossDefeated)
 
         this.player=new player(this.tile,this.row,this.col);
         this.boss=new boss(this.tile,this.col);
@@ -66,7 +67,7 @@ export class bossGame{
                 this.context.drawImage(this.playerImg, this.player.x, this.player.y, this.player.width, this.player.height);
             }
 
-            setInterval(() => {this.createEnemy()},3000);
+            setInterval(() => {this.createEnemy()},1250);
             this.loadTopScores();
 
             requestAnimationFrame(() => this.update());
@@ -74,7 +75,7 @@ export class bossGame{
             document.addEventListener("keyup", (e) => this.shoot(e));
         }
 
-        setInterval(() => {this.bossShot()},1000);
+        setInterval(() => {this.bossShot()},750);
     }
 
 
@@ -199,6 +200,8 @@ createEnemy() { //creating the enemies and their positions
             let enemy=this.enemyArray[k];
             if (!shot.used && enemy.alive && this.collision(shot,enemy)){  //Checking if a shot killed an enemy
                 shot.used=true;
+                this.defeatEnemySFX.play();
+                this.defeatEnemySFX.currentTime = 0;
                 enemy.alive=false;
                 this.newScore+=100;
             }
@@ -218,6 +221,11 @@ createEnemy() { //creating the enemies and their positions
                 this.bossTheme.pause();
                 this.victoryTheme.play();
                 this.gameHeader.innerText="You win";
+                if(this.bossDefeated=="false"){
+                    setTimeout(()=>{this.gameHeader.innerText="Challenge mode unlocked";
+                        this.challengeUnlocked.play();
+                    },7000);
+                }
                 this.context.clearRect(this.boss.x, this.boss.y, this.boss.width, this.boss.height);
                 this.bossDefeated=true;
                 this.updateScores(this.newScore);
@@ -275,7 +283,6 @@ createEnemy() { //creating the enemies and their positions
     let userIndex=users.findIndex(x => x.userName === this.currentUser);
     users[userIndex].bossDefeated=this.bossDefeated;
     localStorage.setItem("bossDefeated",this.bossDefeated);
-    console.log(this.bossDefeated)
     if(this.newScore>parseInt(this.bossTopScore)){
         this.bossTopScore=this.newScore;
         localStorage.setItem('bossTopScore',this.bossTopScore);

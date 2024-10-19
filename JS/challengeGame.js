@@ -27,7 +27,7 @@ export class challengeGame{
         this.shotImg.src = "../images/shot.png";
 
         this.bossBulletVelY=10;
-        this.bossVelX=1;
+        this.bossVelX=-1;
         this.bossShotImg=new Image()
         this.bossShotImg.src="../images/bossShot.png";
 
@@ -39,6 +39,7 @@ export class challengeGame{
         this.playerShotSFX = new Audio("../audio/playerShot.mp3");
         this.bossShotSFX = new Audio("../audio/bossShot.mp3");
         this.destroyedSFX= new Audio("../audio/destroyAsteroid.mp3");
+        this.defeatEnemySFX = new Audio("../audio/defeatEnemy.mp3");
         this.gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
         this.victoryTheme = new Audio("../audio/victory.mp3");
         this.challengeTheme=document.getElementById("challengeTheme");
@@ -231,7 +232,7 @@ moveAsteroid() {
 
             if(this.collision(this.player,asteroid)){
                 this.gameOver=true;
-                this.mapTheme.pause();
+                this.challengeTheme.pause();
                 this.gameOverTheme.play();
                 this.gameHeader.innerText="Game Over";
                 this.updateScores(this.newScore);
@@ -262,6 +263,8 @@ moveAsteroid() {
             let enemy=this.enemyArray[k];
             if (!shot.used && enemy.alive && this.collision(shot,enemy)){  //Checking if a shot killed an enemy
                 shot.used=true;
+                this.defeatEnemySFX.play();
+                this.defeatEnemySFX.currentTime = 0;
                 enemy.alive=false;
                 this.newScore+=100;
                 this.remaining--;

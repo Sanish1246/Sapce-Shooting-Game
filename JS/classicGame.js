@@ -30,6 +30,7 @@ export class classicGame{
 
         this.playerShotSFX = new Audio("../audio/playerShot.mp3");
         this.gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
+        this.defeatEnemySFX = new Audio("../audio/defeatEnemy.mp3");
         this.mapTheme = document.getElementById("mapTheme");
         this.classicTopScore = localStorage.getItem('classicTopScore');
         this.currentUser = localStorage.getItem('currentUser');
@@ -55,7 +56,6 @@ export class classicGame{
             this.enemyImg = new Image();
             this.enemyImg.src = "../images/alien.png";
 
-            setInterval(() => {this.createAsteroid()},1250);
             this.createEnemy();
             this.loadTopScores();
 
@@ -160,6 +160,8 @@ export class classicGame{
             let enemy=this.enemyArray[k];
             if (!shot.used && enemy.alive && this.collision(shot,enemy)){  //Checking if a shot killed an enemy
                 shot.used=true;
+                this.defeatEnemySFX.play();
+                this.defeatEnemySFX.currentTime = 0;
                 enemy.alive=false;
                 this.remaining--;
                 this.newScore+=100;
