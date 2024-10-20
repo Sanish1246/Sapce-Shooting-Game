@@ -1,15 +1,15 @@
 body {
     background-image: url("../images/SpaceSky.png");
-    background-repeat:no-repeat;
+    background-repeat:no-repeat; /*The image will cover the entire screen without repeating*/
     background-size:cover;
     font-family: "Pixelify Sans", sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;
     font-style: normal;
     color: white;
-  }
+}
 
-  h1{
+h1{
     font-family: "Pixelify Sans", sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;
@@ -18,74 +18,65 @@ body {
     font-size: 5rem;
     text-align:center;
     margin-top:0px;
-    opacity: 1;
+    opacity: 1;  /*The header is visible */
     transition: opacity 1s ease; /* Smooth transition for fading */
-  }
+}
 
 
-  h2{
+h2{
     font-size: 2.5rem;
     margin-top:0px;
-  }
+}
 
-  h3{
-    color:black;
+h3{
+    color:red;
     font-size: 2.5rem;
-    margin-top:0px;
-  }
+}
 
-  p{
+p{
     font-size: 2rem;
-  }
+}
 
-  p2{
-    color: black;
+p2{
+    color: red;
     font-size: 2rem;
-  }
+}
 
-  .hidden {
-    opacity: 0; /* Hidden state */
-  }
+.hidden {
+    opacity: 0; /* To hide the header */
+}
   
-  .topBar {
+.topBar { /*The top navigation bar*/
     overflow: hidden;
     background-color: #333;
-    position: sticky;
+    position: sticky; /*So that it will still be at the top of the screen even when scrolling*/
     top:0px;
-  }
+}
   
-  .topBar a{
+.topBar a{
     float: left;
     color: #f2f2f2;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
-  }
+}
 
-  .topBar p{
-    float: left;
-    color: #f2f2f2;
-    text-align: right;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-  }
   
-  .topBar a:hover {
+.topBar a:hover {
     background-color: hsl(214, 93%, 45%);
     color: black;
-  }
+}
 
   
-  .buttonContainer{
+.buttonContainer{ /*Container for the buttins displayed at the center of the scren in a column*/
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
+}
 
-.buttonContainer button{
+.buttonContainer button{ /*Buttons with rounded edges*/
   font-family: "Pixelify Sans", sans-serif;
   font-size:3.5rem;
   color:white;

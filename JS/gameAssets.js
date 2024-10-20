@@ -36,7 +36,7 @@ export class playerShot{
     }
 }
 
-export class Asteroid{
+export class mapAsteroid{
     constructor(tile,spawnPosition){
         this.img=new Image();
         this.img.src = "../images/asteroid.png";

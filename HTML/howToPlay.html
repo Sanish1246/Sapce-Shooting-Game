@@ -6,11 +6,11 @@
     <link rel="stylesheet" href="../CSS/index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet"> <!--Link to the CSS font-->
     <title>How to play</title>
 </head>
 <body>
-    <div class="topBar">
+    <div class="topBar"> <!--Menu bar at the top of the screen-->
         <a href="index.html">Home</a>
         <a href="login.html" id="logInOut">Login</a>
         <a href="classicLB.html">Classic Mode Rankings</a>
@@ -36,8 +36,13 @@
     <h3>Boss fight</h3>
     <p2>Fight against a formidable boss!<br>
         Defeat the boss by hitting it 50 times while avoiding its minions and its shots</p2>
+    
+            
+    <h3 id="challengeHeader">???</h3> <!--Header and text will change dynamically-->
+    <p2 id="challengeText">You must login and complete the boss fight to unlock this mode!</p2>
+    
 
-    <audio autoplay loop src="../audio/LBHowToPlay.mp3"></audio>
-    <script src="../JS/index.js"></script>
+    <audio autoplay loop src="../audio/LBHowToPlay.mp3"></audio> <!--Playing and looping the audio track-->
+    <script src="../JS/howToPlay.js"></script>
 </body>
 </html>

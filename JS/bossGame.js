@@ -6,18 +6,18 @@ export class bossGame{
         this.row = 16;
         this.col = 16;
 
-        this.map;
+        this.map; //Defining the canvas size
         this.mapWidth = this.tile * this.col;
         this.mapHeight = this.tile * this.row;
-        this.context;
+        this.context; //Context is used to draw on the canvas
 
-        this.enemyArray = [];
+        this.enemyArray = []; //Array to store the asteroid objects
         this.enemyVelY=1;
         this.enemyRow=2;
         this.enemyCol=3;
         this.spawnPosition;
 
-        this.shotArray = [];
+        this.shotArray = []; //Array to store the shot objects
         this.shootVelY = -10;
         this.shotImg = new Image();
         this.shotImg.src = "../images/shot.png";
@@ -27,12 +27,14 @@ export class bossGame{
         this.bossShotImg=new Image()
         this.bossShotImg.src="../images/bossShot.png";
 
-        this.gameOver = false;
+        this.gameOver = false; //Setting up the game over flag
         this.playerScore = document.getElementById("playerScore"); //Getting the html element to be updated
         this.newScore = 0;
         this.gameHeader = document.getElementById("gameHeader");
+        this.bossHealth=document.getElementById("bossHealth");
+        this.currentHealth=50;
 
-        this.playerShotSFX = new Audio("../audio/playerShot.mp3");
+        this.playerShotSFX = new Audio("../audio/playerShot.mp3"); //Preparing the audio elements
         this.bossShotSFX = new Audio("../audio/bossShot.mp3");
         this.gameOverTheme = new Audio("../audio/gameOverTheme.mp3");
         this.defeatEnemySFX = new Audio("../audio/defeatEnemy.mp3");
@@ -40,21 +42,17 @@ export class bossGame{
         this.challengeUnlocked = new Audio("../audio/challengeUnlocked.mp3")
         this.bossTheme=document.getElementById("bossTheme");
 
-        this.bossHealth=document.getElementById("bossHealth");;
-        this.currentHealth=50;
-
-
-        this.bossTopScore = localStorage.getItem('bossTopScore');
+        this.bossTopScore = localStorage.getItem('bossTopScore'); //Loading the needed data from local storage
         this.currentUser = localStorage.getItem('currentUser');
         this.bossDefeated=localStorage.getItem('bossDefeated');
 
-        this.player=new player(this.tile,this.row,this.col);
-        this.boss=new boss(this.tile,this.col);
+        this.player=new player(this.tile,this.row,this.col); //Instantiatng the player object
+        this.boss=new boss(this.tile,this.col); //Instantiatng the boss object
 
         this.init();
     }
 
-    init() {
+    init() { //When the object is instantiated
         window.onload = () => {
             this.map = document.getElementById("map"); //Creating the game map
             this.map.width = this.mapWidth;
@@ -67,15 +65,15 @@ export class bossGame{
                 this.context.drawImage(this.playerImg, this.player.x, this.player.y, this.player.width, this.player.height);
             }
 
-            setInterval(() => {this.createEnemy()},1250);
+            setInterval(() => {this.createEnemy()},1250); //Creating the enemies every 1.25 seconds
             this.loadTopScores();
 
             requestAnimationFrame(() => this.update());
-            document.addEventListener("keydown", (e) => this.move(e));
+            document.addEventListener("keydown", (e) => this.move(e)); //Event listeners for key presses
             document.addEventListener("keyup", (e) => this.shoot(e));
         }
 
-        setInterval(() => {this.bossShot()},750);
+        setInterval(() => {this.bossShot()},750); //The boss will decide whether to shoot or not every 0.75 seconds
     }
 
 
@@ -215,20 +213,7 @@ createEnemy() { //creating the enemies and their positions
             this.currentHealth--;
             this.bossHealth.innerText=Math.floor((this.currentHealth)/50*100) + "%";
             if(this.boss.hits>=50){
-                this.newScore+=1000;
-                this.boss.alive=false;
-                this.gameOver=true;
-                this.bossTheme.pause();
-                this.victoryTheme.play();
-                this.gameHeader.innerText="You win";
-                if(this.bossDefeated=="false"){
-                    setTimeout(()=>{this.gameHeader.innerText="Challenge mode unlocked";
-                        this.challengeUnlocked.play();
-                    },7000);
-                }
-                this.context.clearRect(this.boss.x, this.boss.y, this.boss.width, this.boss.height);
-                this.bossDefeated=true;
-                this.updateScores(this.newScore);
+                this.playerWin();
             }
         }
     }
@@ -255,7 +240,24 @@ createEnemy() { //creating the enemies and their positions
     return obj1.x<obj2.x +obj2.width &&//bullet's top left corner has not reached the alien's top right corner
            obj1.x+obj1.width>obj2.x && //bullet's top right corner surpasses alien's top left corner
            obj1.y<obj2.y+obj2.height &&//bullet's top left corner has not reached alien's bottom left corner
-           obj1.y+obj1.height>obj2.y; //bullet's bottom left corner has not passed alien's top left corner
+           obj1.y+obj1.height>obj2.y; //bullet's bottom left corner has not passed alien's top left corner 
+ }
+
+ playerWin(){
+    this.newScore+=1000;
+    this.boss.alive=false;
+    this.gameOver=true;
+    this.bossTheme.pause();
+    this.victoryTheme.play();
+    this.gameHeader.innerText="You win";
+    if(this.bossDefeated=="false"){
+        setTimeout(()=>{this.gameHeader.innerText="Challenge mode unlocked";
+            this.challengeUnlocked.play();
+        },7000);
+    }
+    this.context.clearRect(this.boss.x, this.boss.y, this.boss.width, this.boss.height);
+    this.bossDefeated=true;
+    this.updateScores(this.newScore);
  }
 
  loadTopScores(){

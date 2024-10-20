@@ -1,15 +1,15 @@
 body {
     background-image: url("../images/SpaceSky.png");
-    background-repeat:no-repeat;
+    background-repeat:no-repeat; /*The image will cover the entire screen without repeating*/
     background-size:cover;
     font-family: "Pixelify Sans", sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;
     font-style: normal;
     color: white;
-  }
+}
 
-  h1{
+h1{ /*Header that will remain at the top of the screen */
     font-family: "Pixelify Sans", sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;
@@ -18,20 +18,14 @@ body {
     font-size: 2.5rem;
     text-align:center;
     margin-top:0px;
-  }
-
-  p{
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-  }
-
- /* Center the form on the page */
-body {
-  background-color: hsl(214, 98%, 18%); /* Same background as the container */
-  height: 100vh;
 }
 
-.wrapper{
+p{
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.wrapper{  /* Wrapper to center the form on the page */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,15 +34,14 @@ body {
   left: 3px;
 }
 
-.formContainer{
+.formContainer{ /*Style for the form */
   display: flex;
   justify-content: center;
   align-items: center;
   backdrop-filter: blur(100px);
 }
 
-/* Container styling */
-.container {
+.container { /* Container styling */
   padding: 16px;
   background-color: hsl(214, 98%, 18%);
   border: 1px solid white;
@@ -59,9 +52,8 @@ body {
   margin-bottom: 0px;
 }
 
-/* Full-width input fields */
-input[type=text], input[type=password] {
-  width: 80%; /* Full width within the container */
+input[type=text], input[type=password] { /* Full-width input fields */
+  width: 80%; /* 80% width within the container */
   padding: 15px;
   margin: 5px 0 22px 0;
   display: inline-block;
@@ -70,12 +62,12 @@ input[type=text], input[type=password] {
   outline: 2px solid black;
 }
 
-input[type=text]:focus, input[type=password]:focus {
-  background-color: #ddd;
+input[type=text]:focus, input[type=password]:focus { /*When the field is selected, it will darken a bit */
+  background-color: #ddd; 
 }
 
-/* Set a style for the submit button */
-.login {
+
+.login { /* Style for the submit button */
   background-color: white;
   color: black;
   font-family: "Pixelify Sans", sans-serif;
@@ -84,7 +76,7 @@ input[type=text]:focus, input[type=password]:focus {
   margin: 8px 0;
   border: none;
   cursor: pointer;
-  width: 50%; /* Full width within the container */
+  width: 50%; /* 50% width within the container */
   opacity: 0.9;
   outline: 1px solid black;
 }

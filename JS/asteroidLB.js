@@ -10,7 +10,7 @@ let isHidden = false;
 let users=[];
 
 if(bossDefeated==true){
-    challengeLB.innerText="Challenge Mode Rankings"
+    challengeLB.innerText="Challenge Mode Rankings";
 }
 
 setInterval(() => {
@@ -21,7 +21,7 @@ setInterval(() => {
 if (currentUser != null){
     let newWelcomeMessage = "Welcome " + currentUser + "!";
     welcomeMessage.innerText=newWelcomeMessage;
-    logInOut.innerText="Log out"
+    logInOut.innerText="Log out";
 }
 
 if(localStorage.getItem("users") !=null){ //If there are already existing users

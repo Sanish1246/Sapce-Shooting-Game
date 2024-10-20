@@ -7,19 +7,19 @@
     <link rel="stylesheet" href="../CSS/classic.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet"> <!--Link to the CSS font-->
 </head>
 <body>
-    <audio id="mapTheme"autoplay loop src="../audio/mapTheme.mp3"></audio>
+    <audio id="mapTheme"autoplay loop src="../audio/mapTheme.mp3"></audio> <!--Playing and looping the audio track-->
     <h1 id="gameHeader">Classic mode</h1>
-    <div id="gameContainer">
+    <div id="gameContainer"> <!--Container for the game-->
         <canvas id="map"></canvas>
-        <div id="leaderboard">
+        <div id="leaderboard"> <!--Contains the top then scores-->
             <h2>Top Scores</h2>
             <ol id="topTen"></ol>
         </div>
 
-        <div id="scoreContainer">
+        <div id="scoreContainer"> <!--Displays the player's score and the buttons-->
             <h2>Player Score</h2>
             <h2 id="playerScore">0</h2>
             <button onclick="window.location.href = 'index.html'">Main Menu</button>
@@ -27,7 +27,7 @@
         </div>
 
     </div>
-    <script type="module" src="../JS/classic.js"></script>
+    <script type="module" src="../JS/classic.js"></script> <!--Game modules-->
     <script type="module" src="../JS/classicGame.js"></script>
     <script type="module" src="../JS/gameAssets.js"></script>
 </body>

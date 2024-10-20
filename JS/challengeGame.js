@@ -1,4 +1,4 @@
-import { player, playerShot, boss, alien, bossBullet, Asteroid} from "./gameAssets.js";
+import { player, playerShot, boss, alien, bossBullet, mapAsteroid} from "./gameAssets.js";
 
 export class challengeGame{
     constructor() {
@@ -9,7 +9,7 @@ export class challengeGame{
         this.map;
         this.mapWidth = this.tile * this.col;
         this.mapHeight = this.tile * this.row;
-        this.context;
+        this.context; 
 
         this.enemyArray = [];
         this.enemyVelX=1;
@@ -204,7 +204,7 @@ respawn(){
         this.enemyVelX+=0.1;
         this.enemyArray=[]; 
         this.shotArray=[]; //To ensure that a bullet already fired does not kill an enemy while they are spwaning
-        this.createEnemy()
+        this.createEnemy();
     }
  }
 
@@ -217,7 +217,7 @@ createAsteroid() { //creating the enemies and their positions
 
         spawnPositions[i]=this.spawnPosition;
         
-        let asteroid= new Asteroid(this.tile,spawnPositions[i]);
+        let asteroid= new mapAsteroid(this.tile,spawnPositions[i]);
         this.asteroidArray.push(asteroid);
     }
 }
@@ -279,15 +279,7 @@ moveAsteroid() {
             this.currentHealth--;
             this.bossHealth.innerText=Math.floor((this.currentHealth)/50*100) + "%";
             if(this.boss.hits>=50){
-                this.newScore+=1000;
-                this.boss.alive=false;
-                this.gameOver=true;
-                this.challengeTheme.pause();
-                this.victoryTheme.play();
-                this.gameHeader.innerText="You win";
-                this.context.clearRect(this.boss.x, this.boss.y, this.boss.width, this.boss.height);
-                this.challengeCompleted=true;
-                this.updateScores(this.newScore);
+                this.playerWin();
             }
         }
 
@@ -326,6 +318,18 @@ moveAsteroid() {
            obj1.x+obj1.width>obj2.x && //bullet's top right corner surpasses alien's top left corner
            obj1.y<obj2.y+obj2.height &&//bullet's top left corner has not reached alien's bottom left corner
            obj1.y+obj1.height>obj2.y; //bullet's bottom left corner has not passed alien's top left corner
+ }
+
+ playerWin(){
+    this.newScore+=1000;
+    this.boss.alive=false;
+    this.gameOver=true;
+    this.challengeTheme.pause();
+    this.victoryTheme.play();
+    this.gameHeader.innerText="You win";
+    this.context.clearRect(this.boss.x, this.boss.y, this.boss.width, this.boss.height);
+    this.challengeCompleted=true;
+    this.updateScores(this.newScore);
  }
 
  loadTopScores(){

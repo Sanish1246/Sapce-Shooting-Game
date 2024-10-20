@@ -1,15 +1,15 @@
 body {
     background-image: url("../images/rankings.gif");
-    background-repeat:no-repeat;
+    background-repeat:no-repeat; /*The image will cover the entire screen without repeating*/
     background-size:cover;
     font-family: "Pixelify Sans", sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;
     font-style: normal;
     color: white;
-  }
+}
 
-  h1{
+h1{
     font-family: "Pixelify Sans", sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;
@@ -20,58 +20,57 @@ body {
     margin-top:0px;
     opacity: 1;
     transition: opacity 1s ease; /* Smooth transition for fading */
-    text-shadow: -1px 1px 0 #000,
+    text-shadow: -1px 1px 0 #000,  /*Creates a shadow for the text to make it stand out*/
     1px 1px 0 #000,
     1px -1px 0 #000,
     -1px -1px 0 #000
-  }
+}
 
-  .hidden {
-    opacity: 0; /* Hidden state */
-  }
+.hidden {
+    opacity: 0; /* The header is hidden */
+}
 
-  ol{
+ol{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
+}
 
-  li{
-    text-shadow: -1px 1px 0 #000,
+li{
+    text-shadow: -1px 1px 0 #000, /*Creates a shadow for the text to make it stand out*/
     1px 1px 0 #000,
     1px -1px 0 #000,
     -1px -1px 0 #000;
-    outline-width: 50px;
     font-size:2rem;
-  }
+}
 
-  .topBar {
+.topBar { /*The top navigation bar*/
     overflow: hidden;
     background-color: #333;
-    position: sticky;
+    position: sticky; /*So that it will still be at the top of the screen even when scrolling*/
     top:0px;
-  }
+}
   
-  .topBar a{
+.topBar a{
     float: left;
     color: #f2f2f2;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
-  }
+}
 
-  .topBar p{
+.topBar p{
     float: left;
     color: #f2f2f2;
     text-align: right;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
-  }
+}
   
-  .topBar a:hover {
+.topBar a:hover {
     background-color: hsl(214, 93%, 45%);
     color: black;
-  }
+}
