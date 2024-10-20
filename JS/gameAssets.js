@@ -1,5 +1,4 @@
-// Player.js
-export class player {
+export class player {  //Class for the player
     constructor(tile,row,col) {
         this.playerWidth = tile * 2;
         this.playerHeight = tile * 2;
@@ -13,7 +12,7 @@ export class player {
     }
 }
 
-export class alien {
+export class alien { //Class for the normal alien
     constructor(tile,i,j,newEnemyVelX){
         this.enemyImg = new Image();
         this.enemyImg.src = "../images/alien.png";
@@ -26,7 +25,7 @@ export class alien {
     }
 }
 
-export class playerShot{
+export class playerShot{ //Class for th bullet shot by the player
     constructor(tile,newPlayerX,newPlayerY,newPlayerWidth){
         this.x= newPlayerX + newPlayerWidth*15/32,
         this.y=newPlayerY,
@@ -36,7 +35,7 @@ export class playerShot{
     }
 }
 
-export class mapAsteroid{
+export class mapAsteroid{ //Class for the asteroids
     constructor(tile,spawnPosition){
         this.img=new Image();
         this.img.src = "../images/asteroid.png";
@@ -48,7 +47,7 @@ export class mapAsteroid{
     }
 }
 
-export class boss{
+export class boss{ //Class for the boss
     constructor(tile,col){
         this.bossImg = new Image();
         this.bossImg.src="../images/boss.png";
@@ -61,7 +60,7 @@ export class boss{
     }
 }
 
-export class bossBullet{
+export class bossBullet{ //Class for the bullet shot by the boss
     constructor(tile,bossX,bossY){
         this.x=bossX + tile*4*15/32;
         this.y=bossY;
@@ -70,7 +69,7 @@ export class bossBullet{
     }
 }
 
-export class bossAlien{    //creating each enemy as objects one by one
+export class bossAlien{    //Class for the enemy spawned during boss fight
     constructor(tile,spawn){
         this.enemyImg = new Image();
         this.enemyImg.src = "../images/alien.png";

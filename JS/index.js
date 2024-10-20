@@ -11,13 +11,15 @@ let challengeHeader=document.getElementById('challengeHeader');
 let challengeText=document.getElementById('challengeText');
 let isHidden = false;
 
-if(bossDefeated==true){
+if(bossDefeated==true){ //Checking if the boss fight has been completed
     challengeLB.innerText="Challenge Mode Rankings";
+    challengeButton.style.color = "red";
+    challengeButton.innerText="Challenge mode";
 }
 
-setInterval(() => {
+setInterval(() => { //To make the header fade in and out
     isHidden = !isHidden; 
-    heading.classList.toggle('hidden', isHidden); // Apply the hidden class based on the variable
+    heading.classList.toggle('hidden', isHidden); // Apply the hidden class every 0.75 seconds
 }, 750); 
 
 if (currentUser != null){
@@ -26,17 +28,13 @@ if (currentUser != null){
     logInOut.innerText="Log out";
 }
 
-if (bossDefeated==true && challengeButton!=null){
-    challengeButton.style.color = "red";
-    challengeButton.innerText="Challenge mode";
-}
-
-if (challengeCompleted==true){
+if (challengeCompleted==true){ //Checking if challenge mode has been completed
     challengeButton.style.color = "green";
     challengeButton.innerText="Challenge mode 👑";
+    document.body.style.backgroundImage = "url('../images/bossBackground1.gif')";
 }
 
-function checkRequirement(){
+function checkRequirement(){ //Function to check whether the user can play challenge mode
     if(bossDefeated==true && currentUser!=null){
         window.open("../HTML/challenge.html","_self");
     } else {

@@ -86,15 +86,15 @@ export class bossGame{
     this.context.drawImage(this.playerImg,this.player.x,this.player.y,this.player.width,this.player.height); //Draws the new position
 
     this.moveEnemy();
-    this.moveBoss();
+    this.moveBoss(); //Moving the boss
     this.drawShot();
     this.playerScore.innerText=this.newScore;  //Updating the score on the screen
         
   }
 
- move(e) {
+ move(e) { //Function to move the player when pressing a key
     if (this.gameOver) return;
-    if (e.code === "ArrowRight" && this.player.x + this.tile + this.player.width <= this.map.width) {
+    if (e.code === "ArrowRight" && this.player.x + this.tile + this.player.width <= this.map.width) { //Checks for key press and out of bounds move
         this.player.x += this.player.playerVelX;
     } else if (e.code === "ArrowLeft" && this.player.x - this.tile >= 0) {
         this.player.x -= this.player.playerVelX;
@@ -105,7 +105,19 @@ export class bossGame{
     }
 }
 
-moveBoss(){
+shoot(e){ //Function to shoot a bullet
+    if(this.gameOver){  //The player will not be able to shoot at game over
+        return;
+    }
+    if (e.code=="Space"){
+        let bullet = new playerShot(this.tile,this.player.x,this.player.y,this.player.width);
+        this.shotArray.push(bullet);
+        this.playerShotSFX.play();
+        this.playerShotSFX.currentTime = 0; //Brings back the sound effect back at the beginning
+    }
+ }
+
+moveBoss(){  //Function to move the boss
     if(this.boss.alive){
         this.context.drawImage(this.boss.bossImg,this.boss.x,this.boss.y,this.boss.width,this.boss.height);
         this.boss.x+=this.bossVelX;
@@ -121,7 +133,7 @@ moveBoss(){
             this.bossShotSFX.play();
             this.context.drawImage(this.bossShotImg,this.bossBullet.x,this.bossBullet.y,this.bossBullet.width,this.bossBullet.height);
 
-            if (this.collision(this.bossBullet,this.player)){
+            if (this.collision(this.bossBullet,this.player)){ //Checking if a shot from the boss has hit the player
                 this.gameOver=true;
                 this.bossTheme.pause();
                 this.gameOverTheme.play();
@@ -134,7 +146,7 @@ moveBoss(){
             }
         } 
         
-        if (this.collision(this.boss,this.player)){
+        if (this.collision(this.boss,this.player)){  //Checking collision between the boss and the player
             this.gameOver=true;
             this.bossTheme.pause();
             this.gameOverTheme.play();
@@ -146,8 +158,8 @@ moveBoss(){
 
 createEnemy() { //creating the enemies and their positions
     let spawnPositions=[-1,-2,-3];
-    for (let i=0;i<3;i++){
-        do{
+    for (let i=0;i<3;i++){ //Will create 3 enemies
+        do{ //Generating spwan positions, ensuring that 2 enemies do not spawn in the same position
             this.spawnPosition = Math.floor(Math.random() * (this.mapWidth) );
         } while (spawnPositions.indexOf(this.spawnPosition)!=-1 ||this.spawnPosition+this.tile*2>this.mapWidth ||this.spawnPosition-this.tile<0); //Checking for out of bounds and for spawns in the same point
 
@@ -157,15 +169,15 @@ createEnemy() { //creating the enemies and their positions
         this.enemyArray.push(enemy);
     }
 }
-
- moveEnemy() {
+ 
+ moveEnemy() {  //Function to move the enemies
     for(let i=0;i<this.enemyArray.length;i++){
         let enemy=this.enemyArray[i];
         if (enemy.alive) {
             enemy.y+=this.enemyVelY;  //The enemy moves vertically
             this.context.drawImage(enemy.enemyImg, enemy.x,enemy.y,enemy.width,enemy.height);
 
-            if(this.collision(this.player,enemy)){
+            if(this.collision(this.player,enemy)){  //Checking collision between the player and the enemy
                 this.gameOver=true;
                 this.bossTheme.pause();
                 this.gameOverTheme.play();
@@ -176,19 +188,8 @@ createEnemy() { //creating the enemies and their positions
     }
 }
 
- shoot(e){
-    if(this.gameOver){  //The player will not be able to shoot at game over
-        return;
-    }
-    if (e.code=="Space"){
-        let bullet = new playerShot(this.tile,this.player.x,this.player.y,this.player.width);
-        this.shotArray.push(bullet);
-        this.playerShotSFX.play();
-        this.playerShotSFX.currentTime = 0;
-    }
- }
 
- drawShot(){
+ drawShot(){ //Fucntion to draw a shot
     for(let j=0;j<this.shotArray.length;j++){
         let shot=this.shotArray[j];
         shot.y+=this.shootVelY;
@@ -205,14 +206,14 @@ createEnemy() { //creating the enemies and their positions
             }
         }
 
-        if(!shot.used && this.boss.alive && this.collision(shot,this.boss)){
+        if(!shot.used && this.boss.alive && this.collision(shot,this.boss)){ //Checking if a shot has hit the boss
             this.boss.hits++;
             shot.used=true;
             this.newScore+=100;
             this.context.clearRect(this.boss.x, this.boss.y, this.boss.width, this.boss.height); //Will make the boss image flicker upon getting hit
             this.currentHealth--;
             this.bossHealth.innerText=Math.floor((this.currentHealth)/50*100) + "%";
-            if(this.boss.hits>=50){
+            if(this.boss.hits>=50){ //The boss will be defeated after being hit 50 times
                 this.playerWin();
             }
         }
@@ -224,11 +225,11 @@ createEnemy() { //creating the enemies and their positions
     }
  }
 
- bossShot(){
+ bossShot(){ //function to decide whether the boss will shoot or not
     if(this.gameOver){  //The player will not be able to shoot at game over
         return;
     }
-    this.willShoot=Math.floor(Math.random()*2);
+    this.willShoot=Math.floor(Math.random()*2);  //Generating a random number that is either 0 or 1
     if (this.willShoot==1){
         this.bossShoots=new bossBullet(this.tile,this.boss.x,this.boss.y)
     }
@@ -236,21 +237,21 @@ createEnemy() { //creating the enemies and their positions
 
 
 
- collision(obj1,obj2){
+ collision(obj1,obj2){ //Function to check collision between 2 objects
     return obj1.x<obj2.x +obj2.width &&//bullet's top left corner has not reached the alien's top right corner
            obj1.x+obj1.width>obj2.x && //bullet's top right corner surpasses alien's top left corner
            obj1.y<obj2.y+obj2.height &&//bullet's top left corner has not reached alien's bottom left corner
            obj1.y+obj1.height>obj2.y; //bullet's bottom left corner has not passed alien's top left corner 
  }
 
- playerWin(){
+ playerWin(){  //Function called when the player wins
     this.newScore+=1000;
     this.boss.alive=false;
     this.gameOver=true;
     this.bossTheme.pause();
     this.victoryTheme.play();
     this.gameHeader.innerText="You win";
-    if(this.bossDefeated=="false"){
+    if(this.bossDefeated=="false"){  //If the boss is defeated for the first time
         setTimeout(()=>{this.gameHeader.innerText="Challenge mode unlocked";
             this.challengeUnlocked.play();
         },7000);
@@ -260,24 +261,24 @@ createEnemy() { //creating the enemies and their positions
     this.updateScores(this.newScore);
  }
 
- loadTopScores(){
+ loadTopScores(){ //Function to load and display the top 10 scores
     let users=[];
     if(localStorage.getItem("users") !=null){ //If there are already existing users
       users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
       var leaderboard = document.getElementById('topTen');
       let bossUsers=this.sortByBoss(users);
       for(let i=0;i<bossUsers.length;i++){
-        if(i==10){
+        if(i==10){ //Will display only the top 10 scores
             break;
         }
          let entry = document.createElement('li');
          entry.appendChild(document.createTextNode(bossUsers[i].userName + " " + bossUsers[i].bossTopScore + " pts"));
-         leaderboard.appendChild(entry);
+         leaderboard.appendChild(entry); //Creating a list element and appending it to the list
       }
     }
  }
 
- updateScores(){
+ updateScores(){ //Function to update the top scores of the player
     let users=[];
     if(localStorage.getItem("users") !=null){ //If there are already existing users
         users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
@@ -293,7 +294,7 @@ createEnemy() { //creating the enemies and their positions
     localStorage.setItem("users", JSON.stringify(users)); //Using stringify as localStorage accepts only strings to store the array of users
  }
 
- sortByBoss(array){
+ sortByBoss(array){ //Function to sort the user array by the top scores
     let users=array;
     let Swapped;
 
@@ -302,7 +303,7 @@ createEnemy() { //creating the enemies and their positions
 
         for (let j = 0; j < users.length - i - 1; j++) {
             if (users[j].bossTopScore <  users[j + 1].bossTopScore) {
-                [users[j], users[j + 1]] = [users[j + 1], users[j]];
+                [users[j], users[j + 1]] = [users[j + 1], users[j]]; //Swapping
                 Swapped = true;
             }
         }

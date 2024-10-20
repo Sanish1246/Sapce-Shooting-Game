@@ -1,4 +1,4 @@
-function loginUser(event){
+function loginUser(event){ //Function to login
     
     let newUserName=document.getElementById("username");
     let newPassword=document.getElementById("password");

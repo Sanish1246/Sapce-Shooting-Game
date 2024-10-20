@@ -1,5 +1,5 @@
 let currentUser=localStorage.getItem('currentUser');
-let bossDefeated=localStorage.getItem('bossDefeated')==='true';
+let bossDefeated=localStorage.getItem('bossDefeated')==='true'; 
 
 let welcomeMessage = document.getElementById('welcomeMessage');
 let logInOut=document.getElementById('logInOut');
@@ -9,15 +9,15 @@ let challengeText=document.getElementById('challengeText');
 let challengeLB=document.getElementById('challengeLB');
 let isHidden = false;
 
-if(bossDefeated==true){
+if(bossDefeated==true){ //Checking if the boss fight has been completed
     challengeHeader.innerText="Challenge Mode";
     challengeText.innerText="A combination of all the previous modes! Defeat the boss in order to win"
     challengeLB.innerText="Challenge Mode Rankings";
 }
 
-setInterval(() => {
+setInterval(() => { //To make the header fade in and out
     isHidden = !isHidden; 
-    heading.classList.toggle('hidden', isHidden); // Apply the hidden class based on the variable
+    heading.classList.toggle('hidden', isHidden); // Apply the hidden class 
 }, 750); 
 
 if (currentUser != null){

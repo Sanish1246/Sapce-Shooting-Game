@@ -8,13 +8,13 @@ let challengeLB=document.getElementById('challengeLB');
 let isHidden = false;
 let users=[];
 
-if(bossDefeated=="true"){
+if(bossDefeated==true){ //Checking if the boss fight has been completed
     challengeLB.innerText="Challenge Mode Rankings";
-}
+} 
 
-setInterval(() => {
+setInterval(() => { //To make the header fade in and out
     isHidden = !isHidden; // Toggle the isHidden variable
-    heading.classList.toggle('hidden', isHidden); // Apply the hidden class based on the variable
+    heading.classList.toggle('hidden', isHidden); // Apply the hidden class 
 }, 750);
 
 
@@ -31,15 +31,15 @@ if(localStorage.getItem("users") !=null){ //If there are already existing users
     let extra="👑";
     for(i=0;i<bossUsers.length;i++){
         let entry = document.createElement('li');
-        if (i!=0){
+        if (i!=0){ //Only the first user will have a crown
             extra="";
         }
         entry.appendChild(document.createTextNode(bossUsers[i].userName + " " + bossUsers[i].bossTopScore + " pts" +  extra));
-        leaderboard.appendChild(entry);
+        leaderboard.appendChild(entry); //Creating a list element and appending it to the list
     }
 }
 
-function sortByBoss(array){
+function sortByBoss(array){ //Function to sort the user array by the top scores
     let users=array;
     let Swapped;
 
@@ -48,7 +48,7 @@ function sortByBoss(array){
 
         for (let j = 0; j < users.length - i - 1; j++) {
             if (users[j].bossTopScore <  users[j + 1].bossTopScore) {
-                [users[j], users[j + 1]] = [users[j + 1], users[j]];
+                [users[j], users[j + 1]] = [users[j + 1], users[j]]; //Swapping
                 Swapped = true;
             }
         }

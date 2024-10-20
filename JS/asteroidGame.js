@@ -89,7 +89,7 @@ export class asteroidGame{
     }
 }
 
-createAsteroid() { //creating the enemies and their positions
+createAsteroid() { //creating the asteroids and their positions
     let spawnPositions=[-1,-2,-3,-4];
     for (let i=0;i<4;i++){  //Will create 4 asteroids
         do{  //Generating spwan positions, ensuring that 2 asteroids do not spawn in the same position
@@ -202,7 +202,7 @@ createAsteroid() { //creating the enemies and their positions
     }
  }
 
- sortByAsteroid(array){  //Function to sort the array by the top scores
+ sortByAsteroid(array){ //Function to sort the user array by the top scores
     let users=array;
     let Swapped;
 

@@ -6,22 +6,22 @@ export class challengeGame{
         this.row = 16;
         this.col = 16;
 
-        this.map;
+        this.map; //Defining the canvas size
         this.mapWidth = this.tile * this.col;
         this.mapHeight = this.tile * this.row;
-        this.context; 
+        this.context; //Context is used to draw on the canvas
 
-        this.enemyArray = [];
+        this.enemyArray = []; //Array to store the enemy objects
         this.enemyVelX=1;
         this.enemyRow=2;
         this.enemyCol=3;
         this.spawnPosition;
         this.remaining;
 
-        this.asteroidArray = [];
+        this.asteroidArray = []; //Array to store the array objects
         this.asteroidVelY=0.75;
 
-        this.shotArray = [];
+        this.shotArray = []; //Array to store the shot objects
         this.shootVelY = -10;
         this.shotImg = new Image();
         this.shotImg.src = "../images/shot.png";
@@ -35,8 +35,10 @@ export class challengeGame{
         this.playerScore = document.getElementById("playerScore"); //Getting the html element to be updated
         this.newScore = 0;
         this.gameHeader = document.getElementById("gameHeader");
+        this.bossHealth=document.getElementById("bossHealth");
+        this.currentHealth=50;
 
-        this.playerShotSFX = new Audio("../audio/playerShot.mp3");
+        this.playerShotSFX = new Audio("../audio/playerShot.mp3"); //Preparing the audio elements
         this.bossShotSFX = new Audio("../audio/bossShot.mp3");
         this.destroyedSFX= new Audio("../audio/destroyAsteroid.mp3");
         this.defeatEnemySFX = new Audio("../audio/defeatEnemy.mp3");
@@ -44,21 +46,17 @@ export class challengeGame{
         this.victoryTheme = new Audio("../audio/victory.mp3");
         this.challengeTheme=document.getElementById("challengeTheme");
 
-        this.bossHealth=document.getElementById("bossHealth");
-        this.currentHealth=50;
-
-
-        this.challengeTopScore = localStorage.getItem('challengeTopScore');
+        this.challengeTopScore = localStorage.getItem('challengeTopScore'); //Loading the needed data from local storage
         this.currentUser = localStorage.getItem('currentUser');
         this.challengeCompleted=localStorage.getItem('challengeCompleted');
 
-        this.player=new player(this.tile,this.row,this.col);
-        this.boss=new boss(this.tile,this.col);
+        this.player=new player(this.tile,this.row,this.col); //Instantiatng the player object
+        this.boss=new boss(this.tile,this.col); //Instantiatng the boss object
 
         this.init();
     }
 
-    init() {
+    init() { //When the object is instantiated
         window.onload = () => {
             this.map = document.getElementById("map"); //Creating the game map
             this.map.width = this.mapWidth;
@@ -71,16 +69,16 @@ export class challengeGame{
                 this.context.drawImage(this.playerImg, this.player.x, this.player.y, this.player.width, this.player.height);
             }
 
-            setInterval(() => {this.createAsteroid()},3000);
-            this.createEnemy();
+            setInterval(() => {this.createAsteroid()},3000); //Creating the enemies every 3 seconds
+            this.createEnemy(); //Creating the enemies
             this.loadTopScores();
 
             requestAnimationFrame(() => this.update());
-            document.addEventListener("keydown", (e) => this.move(e));
+            document.addEventListener("keydown", (e) => this.move(e));  //Event listeners for key presses
             document.addEventListener("keyup", (e) => this.shoot(e));
         }
 
-        setInterval(() => {this.bossShot()},1000);
+        setInterval(() => {this.bossShot()},1000); //The boss will decide whether to shoot or not every second
     }
 
 
@@ -101,9 +99,9 @@ export class challengeGame{
         
   }
 
- move(e) {
+ move(e) { //Function to move the player when pressing a key
     if (this.gameOver) return;
-    if (e.code === "ArrowRight" && this.player.x + this.tile + this.player.width <= this.map.width) {
+    if (e.code === "ArrowRight" && this.player.x + this.tile + this.player.width <= this.map.width) { //Checks for key press and out of bounds move
         this.player.x += this.player.playerVelX;
     } else if (e.code === "ArrowLeft" && this.player.x - this.tile >= 0) {
         this.player.x -= this.player.playerVelX;
@@ -114,7 +112,19 @@ export class challengeGame{
     }
 }
 
-moveBoss(){
+shoot(e){
+    if(this.gameOver){  //The player will not be able to shoot at game over
+        return;
+    }
+    if (e.code=="Space"){
+        let bullet = new playerShot(this.tile,this.player.x,this.player.y,this.player.width);
+        this.shotArray.push(bullet);
+        this.playerShotSFX.play();
+        this.playerShotSFX.currentTime = 0; //Brings back the sound effect back at the beginning
+    }
+ }
+
+moveBoss(){ //Function to move the boss
     if(this.boss.alive){
         this.context.drawImage(this.boss.bossImg,this.boss.x,this.boss.y,this.boss.width,this.boss.height);
         this.boss.x+=this.bossVelX;
@@ -130,7 +140,7 @@ moveBoss(){
             this.bossShotSFX.play();
             this.context.drawImage(this.bossShotImg,this.bossBullet.x,this.bossBullet.y,this.bossBullet.width,this.bossBullet.height);
 
-            if (this.collision(this.bossBullet,this.player)){
+            if (this.collision(this.bossBullet,this.player)){ //Checking if a shot from the boss has hit the player
                 this.gameOver=true;
                 this.challengeTheme.pause();
                 this.gameOverTheme.play();
@@ -143,7 +153,7 @@ moveBoss(){
             }
         } 
         
-        if (this.collision(this.boss,this.player)){
+        if (this.collision(this.boss,this.player)){  //Checking collision between the boss and the player
             this.gameOver=true;
             this.bossTheme.pause();
             this.gameOverTheme.play();
@@ -166,19 +176,16 @@ createEnemy() { //creating the enemies and their positions
 moveEnemy() {
     let edgeHit = false; 
 
-    // First loop: Move enemies horizontally and check if an edge is hit
-    for (let i = 0; i < this.enemyArray.length; i++) {
+    for (let i = 0; i < this.enemyArray.length; i++) {  // First loop: Move enemies horizontally and check if an edge is hit
         let enemy = this.enemyArray[i];
         
         if (enemy.alive) {
             enemy.x += enemy.enemyVelX;  // Move enemy horizontally
-            // Check if enemy hits the left or right edge of the canvas
-            if (enemy.x + enemy.width >= this.map.width || enemy.x <= 0) {
+            if (enemy.x + enemy.width >= this.map.width || enemy.x <= 0) { // Check if enemy hits the left or right edge of the canvas
                 edgeHit = true;  
             }
             this.context.drawImage(enemy.enemyImg, enemy.x, enemy.y, enemy.width, enemy.height);
-            // Check if enemy reached the player or collided with the player
-            if (enemy.y > this.player.playerY || this.collision(this.player, enemy)) {
+            if (enemy.y > this.player.playerY || this.collision(this.player, enemy)) {  //Checking if the enemy has reached the bottom or for collision between player and enemy
                 this.gameOver = true;
                 this.challengeTheme.pause();
                 this.gameOverTheme.play();
@@ -188,7 +195,6 @@ moveEnemy() {
         }
     }
 
-    //If an edge was hit, invert all velocities and descend enemies by one tile
     if (edgeHit) {
         for (let i = 0; i < this.enemyArray.length; i++) {
             this.enemyArray[i].enemyVelX *= -1;  // Reverse direction for all enemies
@@ -197,7 +203,7 @@ moveEnemy() {
     }
 }
 
-respawn(){
+respawn(){ //Function to respawn the enemies once all have been killed
     if (this.remaining==0) {
         this.enemyCol=Math.min(this.enemyCol+1,this.col/2-2);  //Ensures a maximum of 6 columns
         this.enemyRow=Math.min(this.enemyRow+1,this.row-4) //Ensures that there are at max 12 rows
@@ -208,10 +214,10 @@ respawn(){
     }
  }
 
-createAsteroid() { //creating the enemies and their positions
+createAsteroid() { //creating the asteroids and their positions
     let spawnPositions=[-1,-2,-3,-4];
-    for (let i=0;i<4;i++){
-        do{
+    for (let i=0;i<4;i++){ //Will create 4 asteroids
+        do{ //Generating spwan positions, ensuring that 2 asteroids do not spawn in the same position
             this.spawnPosition = Math.floor(Math.random() * (this.mapWidth) );
         } while (spawnPositions.indexOf(this.spawnPosition)!=-1 ||this.spawnPosition+this.tile*2>this.mapWidth ||this.spawnPosition-this.tile<0); //Checking for out of bounds and for spawns in the same point
 
@@ -222,7 +228,7 @@ createAsteroid() { //creating the enemies and their positions
     }
 }
 
-moveAsteroid() {
+moveAsteroid() { //Fucntion to move the asteroids
     for(let i=0;i<this.asteroidArray.length;i++){
         let asteroid=this.asteroidArray[i];
         if (asteroid.alive) {
@@ -230,7 +236,7 @@ moveAsteroid() {
  
             this.context.drawImage(asteroid.img, asteroid.x,asteroid.y,asteroid.width,asteroid.height);
 
-            if(this.collision(this.player,asteroid)){
+            if(this.collision(this.player,asteroid)){ //Checking for collision between asteroid and player
                 this.gameOver=true;
                 this.challengeTheme.pause();
                 this.gameOverTheme.play();
@@ -241,25 +247,13 @@ moveAsteroid() {
     }
 }
 
- shoot(e){
-    if(this.gameOver){  //The player will not be able to shoot at game over
-        return;
-    }
-    if (e.code=="Space"){
-        let bullet = new playerShot(this.tile,this.player.x,this.player.y,this.player.width);
-        this.shotArray.push(bullet);
-        this.playerShotSFX.play();
-        this.playerShotSFX.currentTime = 0;
-    }
- }
-
- drawShot(){
+ drawShot(){ //Fucntion to draw a shot
     for(let j=0;j<this.shotArray.length;j++){
         let shot=this.shotArray[j];
         shot.y+=this.shootVelY;
         this.context.drawImage(this.shotImg,shot.x,shot.y,shot.width,shot.height);
 
-        for(let k=0;k<this.enemyArray.length;k++){ //Detecting collision
+        for(let k=0;k<this.enemyArray.length;k++){ 
             let enemy=this.enemyArray[k];
             if (!shot.used && enemy.alive && this.collision(shot,enemy)){  //Checking if a shot killed an enemy
                 shot.used=true;
@@ -271,21 +265,21 @@ moveAsteroid() {
             }
         }
 
-        if(!shot.used && this.boss.alive && this.collision(shot,this.boss)){
+        if(!shot.used && this.boss.alive && this.collision(shot,this.boss)){ //Checking if a shot has hit the boss
             this.boss.hits++;
             shot.used=true;
             this.newScore+=100;
             this.context.clearRect(this.boss.x, this.boss.y, this.boss.width, this.boss.height); //Will make the boss image flicker upon getting hit
             this.currentHealth--;
             this.bossHealth.innerText=Math.floor((this.currentHealth)/50*100) + "%";
-            if(this.boss.hits>=50){
+            if(this.boss.hits>=50){ //The boss will be defeated after being hit 50 times
                 this.playerWin();
             }
         }
 
-        for(let k=0;k<this.asteroidArray.length;k++){ //Detecting collision
+        for(let k=0;k<this.asteroidArray.length;k++){ 
             let asteroid=this.asteroidArray[k];
-            if (!shot.used && asteroid.alive && this.collision(shot,asteroid)){  //Checking if a shot killed an enemy
+            if (!shot.used && asteroid.alive && this.collision(shot,asteroid)){  //Checking if a shot destroyed and asteroid
                 shot.used=true;
                 this.destroyedSFX.play();
                 this.destroyedSFX.currentTime = 0;
@@ -301,11 +295,11 @@ moveAsteroid() {
     }
  }
 
- bossShot(){
+ bossShot(){ //function to decide whether the boss will shoot or not
     if(this.gameOver){  //The player will not be able to shoot at game over
         return;
     }
-    this.willShoot=Math.floor(Math.random()*2);
+    this.willShoot=Math.floor(Math.random()*2); //Generating a random number that is either 0 or 1
     if (this.willShoot==1){
         this.bossShoots=new bossBullet(this.tile,this.boss.x,this.boss.y)
     }
@@ -313,14 +307,14 @@ moveAsteroid() {
 
 
 
- collision(obj1,obj2){
+ collision(obj1,obj2){ //Function to check collision between 2 objects
     return obj1.x<obj2.x +obj2.width &&//bullet's top left corner has not reached the alien's top right corner
            obj1.x+obj1.width>obj2.x && //bullet's top right corner surpasses alien's top left corner
            obj1.y<obj2.y+obj2.height &&//bullet's top left corner has not reached alien's bottom left corner
            obj1.y+obj1.height>obj2.y; //bullet's bottom left corner has not passed alien's top left corner
  }
 
- playerWin(){
+ playerWin(){ //Function called when the player wins
     this.newScore+=1000;
     this.boss.alive=false;
     this.gameOver=true;
@@ -332,24 +326,24 @@ moveAsteroid() {
     this.updateScores(this.newScore);
  }
 
- loadTopScores(){
+ loadTopScores(){ //Function to load and display the top 10 scores
     let users=[];
     if(localStorage.getItem("users") !=null){ //If there are already existing users
       users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
       var leaderboard = document.getElementById('topTen');
       let challengeUsers=this.sortByChallenge(users);
       for(let i=0;i<challengeUsers.length;i++){
-        if(i==10){
+        if(i==10){ //Will display only the top 10 scores
             break;
         }
          let entry = document.createElement('li');
          entry.appendChild(document.createTextNode(challengeUsers[i].userName + " " + challengeUsers[i].challengeTopScore + " pts"));
-         leaderboard.appendChild(entry);
+         leaderboard.appendChild(entry); //Creating a list element and appending it to the list
       }
     }
  }
-
- updateScores(){
+ 
+ updateScores(){ //Function to update the top scores of the player
     let users=[];
     if(localStorage.getItem("users") !=null){ //If there are already existing users
         users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
@@ -365,7 +359,7 @@ moveAsteroid() {
     localStorage.setItem("users", JSON.stringify(users)); //Using stringify as localStorage accepts only strings to store the array of users
  }
 
- sortByChallenge(array){
+ sortByChallenge(array){ //Function to sort the user array by the top scores
     let users=array;
     let Swapped;
 
@@ -374,7 +368,7 @@ moveAsteroid() {
 
         for (let j = 0; j < users.length - i - 1; j++) {
             if (users[j].challengeTopScore <  users[j + 1].challengeTopScore) {
-                [users[j], users[j + 1]] = [users[j + 1], users[j]];
+                [users[j], users[j + 1]] = [users[j + 1], users[j]]; //Swapping
                 Swapped = true;
             }
         }

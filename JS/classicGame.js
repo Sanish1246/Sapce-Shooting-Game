@@ -95,6 +95,18 @@ export class classicGame{
     }
 }
 
+shoot(e){ //Function to shoot a bullet
+    if(this.gameOver){  //The player will not be able to shoot at game over
+        return;
+    }
+    if (e.code=="Space"){
+        let bullet = new playerShot(this.tile,this.player.x,this.player.y,this.player.width);
+        this.shotArray.push(bullet);
+        this.playerShotSFX.play();
+        this.playerShotSFX.currentTime = 0; //Brings back the sound effect back at the beginning
+    }
+ }
+
  createEnemy() { //creating the enemies and their positions
     for (let i=0;i<this.enemyCol;i++){
         for (let j=0;j<this.enemyRow;j++) {
@@ -134,18 +146,6 @@ export class classicGame{
         }
     }
 }
-
- shoot(e){ //Function to shoot a bullet
-    if(this.gameOver){  //The player will not be able to shoot at game over
-        return;
-    }
-    if (e.code=="Space"){
-        let bullet = new playerShot(this.tile,this.player.x,this.player.y,this.player.width);
-        this.shotArray.push(bullet);
-        this.playerShotSFX.play();
-        this.playerShotSFX.currentTime = 0; //Brings back the sound effect back at the beginning
-    }
- }
 
  drawShot(){ //Fucntion to draw a shot
     for(let j=0;j<this.shotArray.length;j++){
@@ -196,7 +196,7 @@ export class classicGame{
       var leaderboard = document.getElementById('topTen');
       let classicUsers=this.sortByClassic(users);
       for(let i=0;i<classicUsers.length;i++){
-        if(i==10){  //Will display only the top 10 scored
+        if(i==10){  //Will display only the top 10 scores
             break;
         }
          let entry = document.createElement('li');
@@ -221,7 +221,7 @@ export class classicGame{
     }
  }
 
- sortByClassic(array){//Function to sort the array by the top scores
+ sortByClassic(array){ //Function to sort the user array by the top scores
     let users=array;
     let Swapped;
 
