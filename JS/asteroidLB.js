@@ -22,6 +22,23 @@ if (currentUser != null){
     let newWelcomeMessage = "Welcome " + currentUser + "!";
     welcomeMessage.innerText=newWelcomeMessage;
     logInOut.innerText="Log out";
+}  
+
+function logOut(){
+    if (currentUser!=null){
+        localStorage.removeItem('currentUser'); //Removing all the user data in the local storage
+        localStorage.removeItem('password');
+        localStorage.removeItem('classicTopScore');
+        localStorage.removeItem('asteroidTopScore');
+        localStorage.removeItem('bossTopScore');
+        localStorage.removeItem('challengeTopScore');
+        localStorage.removeItem('bossDefeated');
+        localStorage.removeItem('challengeCompleted');
+        alert("User logged out successfully");
+        window.open("../HTML/index.html","_self");
+    } else {
+        window.open("../HTML/login.html","_self");
+    }
 }
 
 if(localStorage.getItem("users") !=null){ //If there are already existing users

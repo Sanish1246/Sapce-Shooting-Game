@@ -61,16 +61,11 @@ li{
     font-size: 17px;
 }
 
-.topBar p{
-    float: left;
-    color: #f2f2f2;
-    text-align: right;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-}
-  
 .topBar a:hover {
     background-color: hsl(214, 93%, 45%);
     color: black;
+}
+
+#logInOut:hover{
+    cursor:pointer;
 }

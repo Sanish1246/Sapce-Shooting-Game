@@ -11,7 +11,7 @@ let challengeHeader=document.getElementById('challengeHeader');
 let challengeText=document.getElementById('challengeText');
 let isHidden = false;
 
-if(bossDefeated==true){ //Checking if the boss fight has been completed
+if(bossDefeated==true && currentUser!=null){ //Checking if the boss fight has been completed
     challengeLB.innerText="Challenge Mode Rankings";
     challengeButton.style.color = "red";
     challengeButton.innerText="Challenge mode";
@@ -26,6 +26,23 @@ if (currentUser != null){
     let newWelcomeMessage = "Welcome " + currentUser + "!";
     welcomeMessage.innerText=newWelcomeMessage;
     logInOut.innerText="Log out";
+}
+
+function logOut(){
+    if (currentUser!=null){
+        localStorage.removeItem('currentUser'); //Removing all the user data in the local storage
+        localStorage.removeItem('password');
+        localStorage.removeItem('classicTopScore');
+        localStorage.removeItem('asteroidTopScore');
+        localStorage.removeItem('bossTopScore');
+        localStorage.removeItem('challengeTopScore');
+        localStorage.removeItem('bossDefeated');
+        localStorage.removeItem('challengeCompleted');
+        alert("User logged out successfully");
+        window.open("../HTML/index.html","_self");
+    } else {
+        window.open("../HTML/login.html","_self");
+    }
 }
 
 if (challengeCompleted==true){ //Checking if challenge mode has been completed

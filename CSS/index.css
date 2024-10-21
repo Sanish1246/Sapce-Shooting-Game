@@ -68,6 +68,10 @@ p2{
     color: black;
 }
 
+#logInOut:hover{
+    cursor:pointer;
+}
+
   
 .buttonContainer{ /*Container for the buttins displayed at the center of the scren in a column*/
     display: flex;

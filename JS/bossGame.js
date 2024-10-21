@@ -284,8 +284,10 @@ createEnemy() { //creating the enemies and their positions
         users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
     }
     let userIndex=users.findIndex(x => x.userName === this.currentUser);
-    users[userIndex].bossDefeated=this.bossDefeated;
-    localStorage.setItem("bossDefeated",this.bossDefeated);
+    if(this.currentUser!==null){ //If the user has not logged in
+        users[userIndex].bossDefeated=this.bossDefeated;
+        localStorage.setItem("bossDefeated",this.bossDefeated);
+    }
     if(this.newScore>parseInt(this.bossTopScore)){
         this.bossTopScore=this.newScore;
         localStorage.setItem('bossTopScore',this.bossTopScore);

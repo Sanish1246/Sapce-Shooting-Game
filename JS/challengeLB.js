@@ -3,6 +3,7 @@ let welcomeMessage = document.getElementById('welcomeMessage');
 let logInOut=document.getElementById('logInOut');
 let heading = document.getElementById('mainTitle');
 let bossDefeated=localStorage.getItem('bossDefeated')==='true';
+let challengeLB=document.getElementById('challengeLB');
 let isHidden = false;
 let users=[];
 
@@ -36,7 +37,24 @@ if(localStorage.getItem("users") !=null){ //If there are already existing users
     }
 }
 
-function sortByChallenge(array){ //Function to sort the user array by the top scores
+function logOut(){
+    if (currentUser!=null){
+        localStorage.removeItem('currentUser'); //Removing all the user data in the local storage
+        localStorage.removeItem('password');
+        localStorage.removeItem('classicTopScore');
+        localStorage.removeItem('asteroidTopScore');
+        localStorage.removeItem('bossTopScore');
+        localStorage.removeItem('challengeTopScore');
+        localStorage.removeItem('bossDefeated');
+        localStorage.removeItem('challengeCompleted');
+        alert("User logged out successfully");
+        window.open("../HTML/index.html","_self");
+    } else {
+        window.open("../HTML/login.html","_self");
+    }
+}
+
+function sortByChallenge(array){ //Function to sort the user array by the top scores 
     let users=array;
     let Swapped;
 

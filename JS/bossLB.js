@@ -2,7 +2,7 @@ let currentUser=localStorage.getItem('currentUser');
 let welcomeMessage = document.getElementById('welcomeMessage');
 let logInOut=document.getElementById('logInOut');
 let heading = document.getElementById('mainTitle');
-let bossDefeated=document.getElementById('bossDefeated')==="true"
+let bossDefeated=localStorage.getItem('bossDefeated')==='true'; 
 let challengeLB=document.getElementById('challengeLB');
 
 let isHidden = false;
@@ -23,7 +23,7 @@ if (currentUser != null){
     welcomeMessage.innerText=newWelcomeMessage;
     logInOut.innerText="Log out";
 }
-
+ 
 if(localStorage.getItem("users") !=null){ //If there are already existing users
     users = JSON.parse(localStorage.getItem("users")); //Getting all the user data and storing it in the array
     var leaderboard = document.getElementById('rankings');
@@ -36,6 +36,23 @@ if(localStorage.getItem("users") !=null){ //If there are already existing users
         }
         entry.appendChild(document.createTextNode(bossUsers[i].userName + " " + bossUsers[i].bossTopScore + " pts" +  extra));
         leaderboard.appendChild(entry); //Creating a list element and appending it to the list
+    }
+}
+
+function logOut(){
+    if (currentUser!=null){
+        localStorage.removeItem('currentUser'); //Removing all the user data in the local storage
+        localStorage.removeItem('password');
+        localStorage.removeItem('classicTopScore');
+        localStorage.removeItem('asteroidTopScore');
+        localStorage.removeItem('bossTopScore');
+        localStorage.removeItem('challengeTopScore');
+        localStorage.removeItem('bossDefeated');
+        localStorage.removeItem('challengeCompleted');
+        alert("User logged out successfully");
+        window.open("../HTML/index.html","_self");
+    } else {
+        window.open("../HTML/login.html","_self");
     }
 }
 

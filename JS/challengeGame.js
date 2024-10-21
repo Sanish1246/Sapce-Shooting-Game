@@ -27,7 +27,7 @@ export class challengeGame{
         this.shotImg.src = "../images/shot.png";
 
         this.bossBulletVelY=10;
-        this.bossVelX=-1;
+        this.bossVelX=-1.5;
         this.bossShotImg=new Image()
         this.bossShotImg.src="../images/bossShot.png";
 
@@ -78,7 +78,7 @@ export class challengeGame{
             document.addEventListener("keyup", (e) => this.shoot(e));
         }
 
-        setInterval(() => {this.bossShot()},1000); //The boss will decide whether to shoot or not every second
+        setInterval(() => {this.bossShot()},750); //The boss will decide whether to shoot or not every second
     }
 
 
