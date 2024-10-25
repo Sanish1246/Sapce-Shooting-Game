@@ -76,9 +76,10 @@ input[type=text]:focus, input[type=password]:focus { /*When the field is selecte
   margin: 8px 0;
   border: none;
   cursor: pointer;
-  width: 50%; /* 50% width within the container */
+  width: 40%; /* 40% width within the container */
   opacity: 0.9;
   outline: 1px solid black;
+  font-size:1rem;
 }
 
 a {

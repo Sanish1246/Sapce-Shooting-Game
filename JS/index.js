@@ -38,6 +38,7 @@ function logOut(){
         localStorage.removeItem('challengeTopScore');
         localStorage.removeItem('bossDefeated');
         localStorage.removeItem('challengeCompleted');
+        localStorage.removeItem('TopScore');
         alert("User logged out successfully");
         window.open("../HTML/index.html","_self");
     } else {
