@@ -254,7 +254,7 @@ createEnemy() { //creating the enemies and their positions
     if(this.bossDefeated=="false"){  //If the boss is defeated for the first time
         setTimeout(()=>{this.gameHeader.innerText="Challenge mode unlocked";
             this.challengeUnlocked.play();
-        },7000);
+        },6000);
     }
     this.context.clearRect(this.boss.x, this.boss.y, this.boss.width, this.boss.height);
     this.bossDefeated=true;
