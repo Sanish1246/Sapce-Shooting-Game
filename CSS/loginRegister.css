@@ -21,7 +21,7 @@ h1{ /*Header that will remain at the top of the screen */
 }
 
 p{
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     margin-bottom: 10px;
 }
 
@@ -38,7 +38,6 @@ p{
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(100px);
 }
 
 .container { /* Container styling */
