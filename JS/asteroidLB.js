@@ -35,7 +35,7 @@ function logOut(){
         localStorage.removeItem('bossDefeated');
         localStorage.removeItem('challengeCompleted');
         alert("User logged out successfully");
-        window.open("../HTML/index.html","_self");
+        window.open("../index.html","_self");
     } else {
         window.open("../HTML/login.html","_self");
     }
