@@ -40,7 +40,7 @@ function logOut(){
         localStorage.removeItem('challengeCompleted');
         localStorage.removeItem('TopScore');
         alert("User logged out successfully");
-        window.open("../HTML/index.html","_self");
+        window.open("../index.html","_self");
     } else {
         window.open("../HTML/login.html","_self");
     }

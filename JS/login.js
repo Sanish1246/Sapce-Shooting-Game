@@ -23,7 +23,7 @@ function loginUser(event){ //Function to login
 
 
             event.preventDefault(); //Prevents the form from reloading the page
-            window.open("../HTML/index.html","_self");
+            window.open("../index.html","_self");
         } else {
          alert("Incorrect password!");
         }
