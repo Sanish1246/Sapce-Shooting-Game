@@ -42,7 +42,7 @@ function registerUser(event){ //Function to register a user
         localStorage.setItem('bossDefeated', user.bossDefeated);
         localStorage.setItem('challengeCompleted', user.challengeCompleted);
         event.preventDefault(); //Prevents the form from reloading the page
-        window.open("../HTML/index.html","_self");
+        window.open("../index.html","_self");
     }
 }
 
